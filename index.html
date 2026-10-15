@@ -40,8 +40,8 @@ section { padding-block: 72px 8px; display: flex; flex-direction: column; gap: 2
 
 /* hero */
 .hero { padding-block: 64px 24px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 40px; align-items: end; }
-.hero h1 { font-size: clamp(54px, 8.4vw, 118px); }
-.hero h1 mark { background: var(--sign); color: var(--asphalt); padding: 0 .12em; }
+.hero h1 { font-size: clamp(46px, 6.6vw, 92px); line-height: 1.05; }
+.hero h1 .hl { color: var(--sign); }
 .hero .lede { font-size: 20px; color: #DAD7D0; margin-top: 22px; }
 .hero-phone { justify-self: end; width: 100%; max-width: 260px; }
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 2px solid var(--line); margin-top: 8px; }
@@ -178,7 +178,7 @@ footer { padding-top: 64px; display: flex; flex-direction: column; gap: 8px; col
   <header class="hero">
     <div>
       <span class="mono">Рекрутинг водіїв CDL-A у США · план контент-воронки</span>
-      <h1 style="margin-top:14px">Водій сам приходить на <mark>Lane Check</mark></h1>
+      <h1 style="margin-top:14px">Водій сам приходить на <span class="hl">Lane Check</span></h1>
       <p class="lede">Ми не крутимо оголошення про вакансії. Ми ведемо два канали, які водії дивляться заради користі: новини й правила, що впливають на їхній чек, і чесні розбори перевізників. Хто впізнав свою ситуацію, проходить 60-секундний Lane Check за посиланням, і рекрутер дзвонить того ж дня.</p>
     </div>
     <div class="hero-phone">
