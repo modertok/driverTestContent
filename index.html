@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Swan Trans: контент-план на 21 день</title>
+<title>Контент-план: Swan Transportation і новинний канал</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Overpass:wght@400;600;700;800&family=Overpass+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: three tabs (overview, 21-day plan, format). Sticky bar, content max 1160px.
-   One dark "asphalt" look by choice; yellow is the accent, blue marks the HeyGen format. */
+/* Layout: two main tabs (Swan Transportation, news channel), each with its own sub-tabs in a second sticky row.
+   One dark "asphalt" look by choice; yellow is the accent, blue marks HeyGen / news-only items. */
 :root {
   --bg: #111214;
   --panel: #1A1C1F;
@@ -20,6 +20,7 @@
   --dim: #A5A29B;
   --sign: #FFD200;
   --heygen: #5AA9E6;
+  --news: #FF7A45;
   --display: "Anton", "Impact", "Arial Narrow", sans-serif;
   --body: "Overpass", "Segoe UI", system-ui, sans-serif;
   --mono: "Overpass Mono", ui-monospace, Consolas, monospace;
@@ -35,17 +36,20 @@ a { color: var(--sign); text-underline-offset: 3px; }
 .mono { font-family: var(--mono); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
 .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
 
-.bar { position: sticky; top: 0; z-index: 10; background: rgba(17,18,20,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-.bar .wrap { display: flex; align-items: center; gap: 24px; padding-block: 10px; }
-.brand { display: flex; align-items: center; gap: 12px; flex: none; }
-.brand b { background: var(--sign); color: #111; font-family: var(--display); font-weight: 400; font-size: 22px; padding: 2px 9px; border-radius: 6px; line-height: 1.2; }
-.brand span { font-family: var(--display); font-size: 21px; text-transform: uppercase; white-space: nowrap; }
-.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
-.tabs::-webkit-scrollbar { display: none; }
-.tabs button { all: unset; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 15px; padding: 9px 16px; border-radius: 8px; color: var(--dim); }
-.tabs button:hover { color: var(--fg); }
-.tabs button[aria-selected="true"] { color: #111; background: var(--sign); }
-.tabs button:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
+.top { position: sticky; top: 0; z-index: 10; background: rgba(17,18,20,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top .main { display: flex; align-items: center; gap: 14px; padding-block: 10px; }
+.mainTabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.mainTabs::-webkit-scrollbar, .subTabs::-webkit-scrollbar { display: none; }
+.mainTabs button { all: unset; cursor: pointer; white-space: nowrap; font-family: var(--display); text-transform: uppercase; font-size: 20px; padding: 8px 18px; border-radius: 8px; color: var(--dim); border: 2px solid var(--line); }
+.mainTabs button[aria-selected="true"] { background: var(--sign); color: #111; border-color: var(--sign); }
+.mainTabs button.n[aria-selected="true"] { background: var(--news); border-color: var(--news); }
+.mainTabs button:focus-visible, .subTabs button:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
+.subRow { border-top: 1px solid var(--line); }
+.subTabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 6px; }
+.subTabs button { all: unset; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 15px; padding: 7px 14px; border-radius: 8px; color: var(--dim); }
+.subTabs button:hover { color: var(--fg); }
+.subTabs button[aria-selected="true"] { color: var(--fg); background: var(--panel-2); box-shadow: inset 0 -3px 0 var(--sign); }
+.top.news .subTabs button[aria-selected="true"] { box-shadow: inset 0 -3px 0 var(--news); }
 
 section.tab { display: none; padding-block: 48px 90px; }
 section.tab.on { display: block; }
@@ -58,14 +62,17 @@ h3.s { font-size: 26px; }
 
 .hero h1 { font-size: clamp(52px, 9vw, 118px); line-height: 1.02; }
 .hero h1 em { font-style: normal; color: var(--sign); }
+.news .hero h1 em, .nhero h1 em { color: var(--news); }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .tile { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--sign); padding: 18px 20px; }
+.tile.n { border-top-color: var(--news); }
 .tile b { display: block; font-family: var(--display); font-weight: 400; font-size: 58px; line-height: 1; }
 .tile span { color: var(--dim); font-size: 15px; }
 
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .step { background: var(--panel); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
 .step .n { font-family: var(--display); font-size: 34px; color: var(--sign); line-height: 1; }
+.step.n .n { color: var(--news); }
 .step p { font-size: 16px; color: #CFCBC3; }
 
 .funnel { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
@@ -86,7 +93,6 @@ h3.s { font-size: 26px; }
 .btn.ghost { background: transparent; color: var(--fg); border: 2px solid var(--line); }
 .btn:hover { filter: brightness(1.08); }
 
-/* plan */
 .ctrl { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .chip { all: unset; cursor: pointer; font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 20px; border: 1px solid var(--line); color: var(--dim); background: var(--panel); }
 .chip[aria-pressed="true"] { background: var(--sign); color: #111; border-color: var(--sign); }
@@ -99,26 +105,32 @@ h3.s { font-size: 26px; }
 .db.has-long { border-color: #4A4320; }
 .day { text-align: center; padding-top: 4px; }
 .day b { display: block; font-family: var(--display); font-weight: 400; font-size: 50px; line-height: 1; }
-.day span { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--dim); text-transform: uppercase; }
+.day b.sm { font-size: 38px; }
+.day span { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--dim); text-transform: uppercase; display: block; }
 .items { display: flex; flex-direction: column; min-width: 0; }
-.vc { display: flex; flex-direction: column; gap: 5px; padding: 14px 0 14px 16px; border-left: 4px solid var(--sign); border-top: 1px solid var(--line); margin-left: 0; min-width: 0; }
+.vc { display: flex; flex-direction: column; gap: 5px; padding: 14px 0 14px 16px; border-left: 4px solid var(--sign); border-top: 1px solid var(--line); min-width: 0; }
 .vc:first-child { border-top: 0; padding-top: 4px; }
 .vc.h { border-left-color: var(--heygen); }
 .vc.long { background: linear-gradient(90deg, rgba(255,210,0,.08), transparent 55%); padding: 14px 14px 14px 16px; margin-bottom: 6px; border-top: 0; }
-.vbody { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.nw .vc { border-left-color: var(--news); }
+.nw .vc.h { border-left-color: var(--heygen); }
+.nw .vc.long { background: linear-gradient(90deg, rgba(255,122,69,.10), transparent 55%); }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tg { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; border: 1px solid var(--sign); color: var(--sign); }
 .tg.h { border-color: var(--heygen); color: var(--heygen); }
 .tg.long { background: var(--sign); color: #111; }
 .tg.dim { border-color: var(--line); color: var(--dim); }
+.tg.nr { border-color: var(--news); color: var(--news); }
+.tg.sw { background: rgba(255,210,0,.12); }
 .en { font-size: 19px; font-weight: 800; line-height: 1.25; }
 .ua { font-size: 16.5px; color: #C9C5BC; line-height: 1.3; }
 .ds { font-size: 15px; color: #D6D2CA; margin-top: 2px; }
+.src { font-size: 13px; color: var(--dim); }
+.src b { font-family: var(--mono); font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-right: 6px; }
 .chap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .chap span { font-size: 13px; padding: 3px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--line); color: #DAD7D0; }
 .kw { font-family: var(--mono); font-size: 12px; color: var(--sign); }
 
-/* format */
 .fgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .fc { background: var(--panel); border: 1px solid var(--line); padding: 26px; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 22px; border-top: 4px solid var(--sign); }
 .fc.h { border-top-color: var(--heygen); background-image: linear-gradient(180deg, rgba(90,169,230,.09), transparent 40%); }
@@ -130,10 +142,26 @@ h3.s { font-size: 26px; }
 .fall h3 { font-size: 26px; }
 .fall p { max-width: 80ch; font-size: 17px; color: #E0DDD5; }
 
+/* news */
+.rgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.rc { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--news); padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.rc b { font-family: var(--display); font-weight: 400; font-size: 24px; text-transform: uppercase; }
+.rc span { font-size: 14.5px; color: #CFCBC3; }
+.twocol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.box { background: var(--panel); border: 1px solid var(--line); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+.box.n { border-top: 4px solid var(--news); }
+.box h3 { font-size: 28px; }
+.box ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 8px; font-size: 16px; color: #D6D2CA; }
+.pf { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 6px 16px; font-size: 15px; }
+.pf b { color: var(--fg); }
+.pf span { color: #CFCBC3; }
+.wk { display: flex; flex-direction: column; gap: 14px; }
+
 footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--dim); font-size: 14px; }
 
-@media (max-width: 900px) {
-  .fgrid { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 960px) {
+  .fgrid, .twocol { grid-template-columns: minmax(0, 1fr); }
+  .rgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
   .tiles, .funnel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -141,34 +169,36 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
   .steps { grid-template-columns: minmax(0, 1fr); }
   .brow { grid-template-columns: minmax(0, 1fr) 58px; }
   .brow .tr { grid-column: 1 / -1; grid-row: 2; }
-  .brand span { display: none; }
+  .mainTabs button { font-size: 17px; padding: 7px 12px; }
   .db { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
   .day { text-align: left; display: flex; align-items: baseline; gap: 10px; }
   .day b { font-size: 36px; }
   .fc { grid-template-columns: minmax(0, 1fr); }
   .mock { max-width: 170px; }
+  .rgrid { grid-template-columns: minmax(0, 1fr); }
+  .pf { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 
-<div class="bar">
-  <div class="wrap">
-    <div class="brand"><b>SW</b><span>Swan Trans</span></div>
-    <nav class="tabs" role="tablist" aria-label="Розділи презентації">
-      <button role="tab" id="t-overview" aria-selected="true" aria-controls="overview" data-tab="overview">Огляд</button>
-      <button role="tab" id="t-plan" aria-selected="false" aria-controls="plan" data-tab="plan">План на 21 день</button>
-      <button role="tab" id="t-format" aria-selected="false" aria-controls="format" data-tab="format">Формат</button>
+<div class="top" id="top">
+  <div class="wrap main">
+    <nav class="mainTabs" role="tablist" aria-label="Основні розділи">
+      <button role="tab" id="m-swan" aria-selected="true" data-main="swan">Swan Transportation</button>
+      <button role="tab" id="m-news" aria-selected="false" class="n" data-main="news">Новинний канал</button>
     </nav>
   </div>
+  <div class="subRow"><div class="wrap"><nav class="subTabs" id="subTabs" role="tablist" aria-label="Підрозділи"></nav></div></div>
 </div>
 
 <main>
-<section class="tab on wrap" id="overview" role="tabpanel" aria-labelledby="t-overview">
+<!-- ============ SWAN ============ -->
+<section class="tab on wrap" id="swan-overview" role="tabpanel">
   <div class="stack">
     <div class="head hero">
-      <span class="mono">Instagram Reels · TikTok · YouTube · 21 день</span>
+      <span class="mono">Swan Transportation · Instagram Reels · TikTok · YouTube · 21 день</span>
       <h1><em id="h-total"></em> відео<br>за <em>21</em> день</h1>
       <p class="lede">Три коротких відео щодня (<span id="h-shorts"></span> за 21 день) і <span id="h-longs"></span> довгі пояснення на YouTube раз на 4–5 днів. Теми беремо з роликів, які вже набрали мільйони переглядів, і робимо свої.</p>
     </div>
@@ -189,23 +219,24 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
         <div class="fs"><b>Перегляд</b><span>Reels, TikTok, YouTube</span></div>
         <div class="fs"><b>Swan Check</b><span>коротка форма на 60 секунд</span></div>
         <div class="fs"><b>Дзвінок</b><span>рекрутер Swan телефонує</span></div>
-        <div class="fs"><b>Орієнтація</b><span>перший рейс із Swan</span></div>
+        <div class="fs"><b>Перший рейс</b><span>старт роботи зі Swan</span></div>
       </div>
     </div>
 
     <div class="stack" style="gap:20px">
       <h2 class="t">Що дивляться водії</h2>
-      <p class="lede">Попит за напрямками: медіана переглядів у топ-40 результатів YouTube за 80 пошуковими запитами (1 963 відео, зібрано 26.10.2026).</p>
+      <span class="mono">Останній збір відбувся 26.10.2026</span>
+      <p class="lede">Попит за напрямками: медіана переглядів у топ-40 результатів YouTube за 80 пошуковими запитами (1 963 відео).</p>
       <div class="bars" id="bars"></div>
       <div class="dl">
         <a class="btn" href="files/driver-recruiting-semantic-core.xlsx" download>Семантичне ядро (xlsx)</a>
-        <a class="btn ghost" href="files/swan-content-plan.xlsx" download>Таблиця плану (xlsx)</a>
+        <a class="btn ghost" href="files/swan-content-plan.xlsx" download>Таблиця плану Swan (xlsx)</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="tab wrap" id="plan" role="tabpanel" aria-labelledby="t-plan">
+<section class="tab wrap" id="swan-plan" role="tabpanel">
   <div class="stack" style="gap:28px">
     <div class="head">
       <h2 class="t">План на 21 день</h2>
@@ -216,7 +247,7 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
   </div>
 </section>
 
-<section class="tab wrap" id="format" role="tabpanel" aria-labelledby="t-format">
+<section class="tab wrap" id="swan-format" role="tabpanel">
   <div class="stack">
     <div class="head">
       <h2 class="t">Два формати</h2>
@@ -229,56 +260,120 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
     </div>
   </div>
 </section>
+
+<!-- ============ NEWS ============ -->
+<section class="tab wrap" id="news-how" role="tabpanel">
+  <div class="stack nhero">
+    <div class="head hero">
+      <span class="mono">Окремий новинний канал · YouTube · TikTok · Instagram Reels</span>
+      <h1>Новини <em>для водіїв</em><br>щодня</h1>
+      <p class="lede">Щодня 1–3 короткі новини про тракінг, у неділю один випуск з усіма новинами тижня. Канал самостійний, а Swan Transportation згадується в ньому поруч і в кінці окремих відео.</p>
+    </div>
+    <div class="tiles" id="ntiles"></div>
+
+    <div class="stack" style="gap:20px">
+      <h2 class="t">Як працює канал</h2>
+      <div class="steps">
+        <div class="step n"><span class="n">1</span><h3 class="s">Щодня</h3><p>1–3 шортси до 60 секунд: заголовок, три факти, що це означає для водія, джерело на екрані.</p></div>
+        <div class="step n"><span class="n">2</span><h3 class="s">У неділю</h3><p>Випуск на 6–8 хвилин зі всіма новинами тижня за рубриками: паливо, правила, ринок, дорога, техніка.</p></div>
+        <div class="step n"><span class="n">3</span><h3 class="s">Згадки Swan</h3><p>Коротко й без реклами в лоб: кінцевий слайд, розділ в недільному випуску, посилання в профілі.</p></div>
+      </div>
+    </div>
+
+    <div class="stack" style="gap:20px">
+      <h2 class="t">Рубрики</h2>
+      <div class="rgrid" id="rgrid"></div>
+    </div>
+
+    <div class="twocol">
+      <div class="box n"><h3>Перехресні згадки</h3><ul id="cross"></ul></div>
+      <div class="box n"><h3>Джерела</h3><ul id="srcs"></ul><p class="note">Перед виходом кожну новину звіряємо з першоджерелом. Якщо за день з'являється свіжіша гаряча новина, вона заходить замість запланованої.</p></div>
+    </div>
+
+    <div class="stack" style="gap:20px">
+      <h2 class="t">На що орієнтуємось</h2>
+      <p class="lede">Канали ніші, чиї новинні формати вже працюють.</p>
+      <div class="pf" id="proof"></div>
+    </div>
+  </div>
+</section>
+
+<section class="tab wrap" id="news-week" role="tabpanel">
+  <div class="stack" style="gap:28px">
+    <div class="head">
+      <h2 class="t">Перший тиждень</h2>
+      <p class="lede">Вівторок 27.10 – неділя 01.11.2026. Теми з новин останнього тижня; далі працюємо зі свіжими. Два шортси на день, у неділю один шортс і випуск Weekly Haul.</p>
+    </div>
+    <div class="vlist wk nw" id="nweek"></div>
+    <div class="dl">
+      <a class="btn" href="files/swan-news-week1.xlsx" download>Таблиця новинного тижня (xlsx)</a>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
-  <div class="wrap">Swan Trans · контент-план на 21 день · Instagram Reels, TikTok, YouTube Shorts, YouTube</div>
+  <div class="wrap">Swan Transportation · новинний канал · контент-план</div>
 </footer>
 
 <script>
-const DATA = {"stats": {"total": 67, "shorts": 63, "longs": 4, "h_shorts": 21, "m_shorts": 42, "cuts": 7}, "videos": [{"day": 1, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #1: “Home every weekend”", "ua": "Розбір оголошення №1: «Home every weekend»", "desc": "Розбираємо вигадане оголошення про роботу. Чому фраза «додому щовихідних» нічого не гарантує і яке одне питання треба поставити перевізнику.", "cut": ""}, {"day": 1, "slot": "b", "kind": "short", "variant": "H", "en": "5 questions that make a bad recruiter nervous", "ua": "5 питань, від яких поганий рекрутер нервує", "desc": "П'ять прямих питань перед підписанням: скільки водіїв пішло, зразок settlement, practical чи short милі, простій, home time письмово. Добрий рекрутер відповість на всі.", "cut": ""}, {"day": 1, "slot": "c", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 1: “Still good for home Friday?”", "ua": "Dispatch Files, серія 1: «Ще в силі, що додому в п'ятницю?»", "desc": "Чат із диспетчером: дім знову переносять. Типовий розвиток розмови й правильне питання про графік.", "cut": ""}, {"day": 2, "slot": "a", "kind": "short", "variant": "M", "en": "Practical miles vs short miles in 20 seconds", "ua": "Practical і short милі за 20 секунд", "desc": "На карті: водій проїхав 1 000 миль, а заплатили за 940. Показуємо різницю й дві фрази, які треба спитати.", "cut": ""}, {"day": 2, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: how fast do I get paid?", "ua": "Відповідь водієві: як швидко мені заплатять?", "desc": "Ведучий відповідає на питання з коментарів: як працює графік виплат і що завжди просити в письмовому вигляді.", "cut": ""}, {"day": 2, "slot": "c", "kind": "short", "variant": "M", "en": "CAT scale: how not to be overweight", "ua": "CAT scale: як не отримати перевантаження", "desc": "Схема осей і розподілу вантажу. Що робити, якщо вага на осях не сходиться.", "cut": ""}, {"day": 3, "slot": "a", "kind": "short", "variant": "M", "en": "Where a $1,000 load really goes (example)", "ua": "Куди насправді йде вантаж на $1,000 (приклад)", "desc": "Схема від вантажу до чека водія. Усі цифри підписані як приклад.", "cut": ""}, {"day": 3, "slot": "b", "kind": "short", "variant": "H", "en": "Home time: the answers to listen for", "ua": "Home time: на що звертати увагу у відповідях", "desc": "Ведучий розбирає три типові відповіді про home time: що звучить конкретно, а що розмито.", "cut": ""}, {"day": 3, "slot": "c", "kind": "short", "variant": "M", "en": "How truck drivers shower on the road", "ua": "Як водії-далекобійники миються в дорозі", "desc": "Покроково: truck stop, талон на душ, правила. Популярна тема про побут у рейсі.", "cut": ""}, {"day": 4, "slot": "L", "kind": "long", "variant": "H", "en": "How Truck Drivers Get Paid: Per Mile, Percentage, Hourly (2026)", "ua": "Як платять водіям вантажівок: за милю, відсоток, погодинно (2026)", "desc": "Усі моделі оплати: за милю (practical і short милі), відсоток від вантажу, погодинна й тижнева гарантія. Доплати за простій і відрахування, що питати перевізника.", "chapters": ["Центи за милю", "Відсоток", "Погодинна", "Гарантія", "Detention, layover, stop pay", "Відрахування", "Settlement"], "kw": "how truck drivers get paid · truck driver pay explained", "id": "L1"}, {"day": 4, "slot": "a", "kind": "short", "variant": "M", "en": "Detention: after how many hours should you be paid?", "ua": "Detention: через скільки годин очікування мають платити?", "desc": "Таймер на екрані: що таке вільний час на складі й що фіксувати, щоб отримати оплату.", "cut": ""}, {"day": 4, "slot": "b", "kind": "short", "variant": "H", "en": "Why drivers leave their carrier: 5 reasons", "ua": "Чому водії залишають перевізника: 5 причин", "desc": "П'ять причин, які називають водії: графік, гроші, диспетчер, техніка, ставлення. Короткий розбір без вигаданих історій.", "cut": ""}, {"day": 4, "slot": "c", "kind": "short", "variant": "M", "en": "Per mile or percentage: which pays more when freight is slow?", "ua": "За милю чи відсоток: що платить більше, коли вантажів мало?", "desc": "Кадр із довгого відео про оплату: два графіки по тижнях і коли виграє кожна модель.", "cut": "L1"}, {"day": 5, "slot": "a", "kind": "short", "variant": "M", "en": "OTR vs Regional vs Local in 30 seconds", "ua": "OTR, Regional і Local за 30 секунд", "desc": "Карта й лічильник ночей: скільки днів удома в кожному типі роботи.", "cut": ""}, {"day": 5, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: can I pick my lanes?", "ua": "Відповідь водієві: чи можна обирати маршрути?", "desc": "Ведучий пояснює, як працює вибір лейнів і як про це питати перевізника.", "cut": ""}, {"day": 5, "slot": "c", "kind": "short", "variant": "M", "en": "3 deductions that surprise drivers on a settlement", "ua": "3 відрахування, які дивують водіїв у settlement", "desc": "Escrow, обладнання, паливо: як вони виглядають у розрахунковому листі і що саме питати.", "cut": ""}, {"day": 6, "slot": "a", "kind": "short", "variant": "M", "en": "How much fuel does a semi hold? What a fill-up costs (example)", "ua": "Скільки пального вміщує тягач і скільки коштує заправка (приклад)", "desc": "Об'єм баків, ціна повної заправки на прикладі й чому паливо так впливає на оплату.", "cut": ""}, {"day": 6, "slot": "b", "kind": "short", "variant": "H", "en": "Thinking about leaving your carrier? Try these 3 things first", "ua": "Думаєте піти від перевізника? Спробуйте спершу 3 речі", "desc": "Три практичні кроки перед рішенням: поговорити з диспетчером, зафіксувати проблему письмово, порівняти умови.", "cut": ""}, {"day": 6, "slot": "c", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #2: “Top pay”", "ua": "Розбір оголошення №2: «Top pay»", "desc": "Вигадане оголошення: що означає «найкраща оплата» без цифр і умов і що спитати.", "cut": ""}, {"day": 7, "slot": "a", "kind": "short", "variant": "M", "en": "What a DOT officer checks first", "ua": "Що перевіряє офіцер DOT насамперед", "desc": "Схема огляду: документи, ELD, стан тягача. Три речі, на які дивляться першими.", "cut": ""}, {"day": 7, "slot": "b", "kind": "short", "variant": "H", "en": "What a trucking recruiter's day really looks like", "ua": "Яким насправді буває день рекрутера в тракінгу", "desc": "Рекрутер розповідає про свій день: дзвінки, питання водіїв, що вирішується швидко, а що ні. Без прикрас.", "cut": ""}, {"day": 7, "slot": "c", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 2: “The load changed again”", "ua": "Dispatch Files, серія 2: «Вантаж знову змінили»", "desc": "Чат із диспетчером: маршрут змінюється в останню мить. Що відповісти й що зафіксувати.", "cut": ""}, {"day": 8, "slot": "a", "kind": "short", "variant": "M", "en": "Inside a sleeper cab: what's in it", "ua": "Усередині кабіни зі спальним місцем: що там є", "desc": "Ілюстрована кабіна з підписами: ліжко, холодильник, інвертор, зберігання. Для тих, хто хоче уявити побут у рейсі.", "cut": ""}, {"day": 8, "slot": "b", "kind": "short", "variant": "H", "en": "Staying close to family from the road: 5 habits", "ua": "Як тримати зв'язок із сім'єю з дороги: 5 звичок", "desc": "П'ять простих звичок, що допомагають бути поруч, коли ви в рейсі.", "cut": ""}, {"day": 8, "slot": "c", "kind": "short", "variant": "M", "en": "Hours of Service in 30 seconds", "ua": "Hours of Service за 30 секунд", "desc": "П'ять правил FMCSA на екрані ELD: 11 годин руху, 14-годинне вікно, 30 хвилин перерви, ліміт 60/70 годин, 34-годинний рестарт.", "cut": ""}, {"day": 9, "slot": "L", "kind": "long", "variant": "H", "en": "How to Switch Trucking Companies Without Losing Money", "ua": "Як змінити перевізника й не втратити гроші", "desc": "Коли йти, що перевірити в контракті й settlement, escrow та утримання, лізинг техніки, пауза між роботами. Що вимагати від нового перевізника.", "chapters": ["Коли йти", "Контракт і settlement", "Escrow", "Лізинг техніки", "Пауза між роботами", "Що питати"], "kw": "how to switch trucking companies", "id": "L2"}, {"day": 9, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 3: “Waiting 5 hours at the dock”", "ua": "Dispatch Files, серія 3: «П'ять годин чекаю на доку»", "desc": "Чат із диспетчером про довге очікування на складі і про те, коли починається оплата простою.", "cut": ""}, {"day": 9, "slot": "b", "kind": "short", "variant": "H", "en": "What a good answer from a recruiter sounds like", "ua": "Як звучить добра відповідь рекрутера", "desc": "Ведучий порівнює дві відповіді на те саме питання: конкретну і розмиту.", "cut": ""}, {"day": 9, "slot": "c", "kind": "short", "variant": "M", "en": "What to check in your contract before you leave a carrier", "ua": "Що перевірити в контракті, перш ніж піти від перевізника", "desc": "Кадр із довгого відео: пункти про escrow, лізинг і закриття розрахунків.", "cut": "L2"}, {"day": 10, "slot": "a", "kind": "short", "variant": "M", "en": "Promises vs the contract: 3 things to check in writing", "ua": "Обіцянки проти контракту: 3 пункти, які треба бачити письмово", "desc": "Спліт-екран «що сказали» і «що в документі»: home time, оплата, відрахування.", "cut": ""}, {"day": 10, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: do I need experience?", "ua": "Відповідь водієві: чи потрібен досвід?", "desc": "Ведучий коротко пояснює вимоги до досвіду й що ще дивляться при відборі.", "cut": ""}, {"day": 10, "slot": "c", "kind": "short", "variant": "M", "en": "What you can lose when you switch carriers", "ua": "Що можна втратити при зміні перевізника", "desc": "Утримані кошти, бонуси, вислуга: короткий чекліст перед звільненням.", "cut": "L2"}, {"day": 11, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #3: “Brand-new equipment”", "ua": "Розбір оголошення №3: «Brand-new equipment»", "desc": "Вигадане оголошення: що означає «нова техніка» і що спитати про вік тягачів і обладнання.", "cut": ""}, {"day": 11, "slot": "b", "kind": "short", "variant": "H", "en": "The weekly guarantee: what counts and what doesn't", "ua": "Тижнева гарантія: що в неї входить, а що ні", "desc": "Ведучий пояснює, як рахують гарантований мінімум і що на нього не впливає.", "cut": ""}, {"day": 11, "slot": "c", "kind": "short", "variant": "M", "en": "34-hour restart in 20 seconds", "ua": "34-годинний рестарт за 20 секунд", "desc": "Схема на ELD: коли тиждень обнуляється і що не рахується відпочинком.", "cut": ""}, {"day": 12, "slot": "a", "kind": "short", "variant": "M", "en": "The 30-minute break rule", "ua": "Правило 30-хвилинної перерви", "desc": "Коли її потрібно брати і що вважається перервою.", "cut": ""}, {"day": 12, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: what's orientation like?", "ua": "Відповідь водієві: яка вона, орієнтація?", "desc": "Ведучий розповідає, як проходить орієнтація й що взяти з собою.", "cut": ""}, {"day": 12, "slot": "c", "kind": "short", "variant": "M", "en": "What your ELD actually records", "ua": "Що насправді записує ваш ELD", "desc": "Іконки на екрані: час, милі, двигун, місцезнаходження.", "cut": ""}, {"day": 13, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 4: “Where's my layover pay?”", "ua": "Dispatch Files, серія 4: «Де моя оплата за layover?»", "desc": "Чат із диспетчером про ніч в очікуванні вантажу і що йому писати.", "cut": ""}, {"day": 13, "slot": "b", "kind": "short", "variant": "H", "en": "Sign-on bonus: when you actually get it", "ua": "Sign-on бонус: коли його насправді виплачують", "desc": "Ведучий пояснює типові умови виплати бонусу і що уточнити письмово.", "cut": ""}, {"day": 13, "slot": "c", "kind": "short", "variant": "M", "en": "How to check a settlement sheet in 60 seconds", "ua": "Як перевірити розрахунковий лист за 60 секунд", "desc": "Червона ручка на прикладі листа: милі, ставка, відрахування, чистий підсумок.", "cut": ""}, {"day": 14, "slot": "L", "kind": "long", "variant": "H", "en": "Truck Driver Home Time: What “Home Weekly” Really Means", "ua": "Home time водія: що насправді означає «home weekly»", "desc": "OTR, regional, local і dedicated: скільки ночей удома в кожному, як про це питати й що вимагати письмово.", "chapters": ["Що значить home weekly", "OTR", "Regional", "Local", "Dedicated", "Що вимагати письмово"], "kw": "truck driver home time · OTR vs regional vs local", "id": "L3"}, {"day": 14, "slot": "a", "kind": "short", "variant": "M", "en": "Team driving: how two drivers share the clock", "ua": "Командна їзда: як двоє водіїв ділять час", "desc": "Один веде, другий відпочиває в спальнику. Як це вкладається в ліміти HOS.", "cut": ""}, {"day": 14, "slot": "b", "kind": "short", "variant": "H", "en": "Planning your time at home as a driver", "ua": "Як планувати час удома водієві", "desc": "Практичні поради: вихідні, сім'я, відпочинок і що зробити за перший вечір.", "cut": ""}, {"day": 14, "slot": "c", "kind": "short", "variant": "M", "en": "What “home weekly” means in writing", "ua": "Що означає «home weekly» у письмовому вигляді", "desc": "Календар на 4 тижні й слова, які варто бачити в умовах.", "cut": "L3"}, {"day": 15, "slot": "a", "kind": "short", "variant": "M", "en": "Dedicated: what it is and who it fits", "ua": "Dedicated: що це і кому підходить", "desc": "Схема постійного маршруту й чим він відрізняється від OTR.", "cut": ""}, {"day": 15, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: what if I want to leave?", "ua": "Відповідь водієві: що якщо я захочу піти?", "desc": "Ведучий пояснює, як працює розрахунок і що вирішують письмово.", "cut": ""}, {"day": 15, "slot": "c", "kind": "short", "variant": "M", "en": "Nights at home per month: three job types", "ua": "Ночі вдома за місяць: три типи роботи", "desc": "Лічильник ночей для OTR, regional і local.", "cut": "L3"}, {"day": 16, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #4: “Sign-on bonus*”", "ua": "Розбір оголошення №4: «Sign-on bonus*»", "desc": "Вигадане оголошення із зірочкою й дрібним шрифтом: що там зазвичай приховано.", "cut": ""}, {"day": 16, "slot": "b", "kind": "short", "variant": "H", "en": "Truck stop rules nobody explains", "ua": "Правила truck stop, які ніхто не пояснює", "desc": "Паркування, душ, черга на ваги й етикет, про які не пишуть в інструкціях.", "cut": ""}, {"day": 16, "slot": "c", "kind": "short", "variant": "M", "en": "What happens at a shipper, step by step", "ua": "Що відбувається на складі відправника, крок за кроком", "desc": "Двір, ворота, док, чек-ін, пломба: схема на графіці.", "cut": ""}, {"day": 17, "slot": "a", "kind": "short", "variant": "M", "en": "A 14-hour driving day, hour by hour", "ua": "14-годинний робочий день водія, година за годиною", "desc": "Таймлайн HOS: 11 годин руху, 14-годинне вікно, перерва.", "cut": ""}, {"day": 17, "slot": "b", "kind": "short", "variant": "H", "en": "The question that tells you how a carrier treats drivers", "ua": "Питання, яке показує, як перевізник ставиться до водіїв", "desc": "«Скільки водіїв пішло за останні 90 днів?» і як сприймати відповідь.", "cut": ""}, {"day": 17, "slot": "c", "kind": "short", "variant": "M", "en": "5 things to check on a truck before you roll", "ua": "5 речей перевірити на тягачі перед виїздом", "desc": "Чекліст: шини, гальма, світло, зчіпка, рівні рідин.", "cut": ""}, {"day": 18, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 5: “Just push through your hours”", "ua": "Dispatch Files, серія 5: «Просто доїдь за годинами»", "desc": "Чат із диспетчером про тиск вийти за ліміти HOS і як відповісти, не псуючи стосунки.", "cut": ""}, {"day": 18, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: what happens if the truck breaks down?", "ua": "Відповідь водієві: що буде, якщо тягач зламався?", "desc": "Ведучий пояснює, куди дзвонити, як фіксувати час і що з оплатою.", "cut": ""}, {"day": 18, "slot": "c", "kind": "short", "variant": "M", "en": "How drivers sleep in a sleeper cab", "ua": "Як водії сплять у кабіні зі спальним місцем", "desc": "Схема ліжка, штор і температури, що допомагає виспатися в рейсі.", "cut": "L4"}, {"day": 19, "slot": "L", "kind": "long", "variant": "H", "en": "How Truckers Live in the Cab: Sleeping, Showering, Eating", "ua": "Як водії живуть у кабіні: сон, душ, їжа", "desc": "Повний огляд побуту в рейсі: ліжко, душ, їжа, паркування, прання й зв'язок із родиною.", "chapters": ["Сон", "Душ", "Їжа", "Паркування", "Прання", "Сім'я"], "kw": "how do truck drivers shower · life on the road", "id": "L4"}, {"day": 19, "slot": "a", "kind": "short", "variant": "M", "en": "APU, inverter, fridge: what each one does", "ua": "APU, інвертор, холодильник: що це і навіщо", "desc": "Іконки на ілюстрованій кабіні й для чого кожен пристрій.", "cut": ""}, {"day": 19, "slot": "b", "kind": "short", "variant": "H", "en": "Pets on the truck: what to know", "ua": "Тварини в кабіні: що треба знати", "desc": "Ведучий розповідає про правила й домовленості щодо тварин.", "cut": ""}, {"day": 19, "slot": "c", "kind": "short", "variant": "M", "en": "5 easy meals you can make in a cab", "ua": "5 простих страв, які можна приготувати в кабіні", "desc": "Рецепти на інвертор і міні-кухню.", "cut": "L4"}, {"day": 20, "slot": "a", "kind": "short", "variant": "M", "en": "Winter: 7 things to keep in your cab", "ua": "Зима: 7 речей, які мають бути в кабіні", "desc": "Чекліст: ланцюги, обігрів, їжа, вода, ліхтар.", "cut": ""}, {"day": 20, "slot": "b", "kind": "short", "variant": "H", "en": "Can family ride along? What to know", "ua": "Чи можна їхати з сім'єю? Що треба знати", "desc": "Ведучий пояснює, як вирішується питання пасажирів у кабіні.", "cut": ""}, {"day": 20, "slot": "c", "kind": "short", "variant": "M", "en": "Where to park when the truck stop is full", "ua": "Де паркуватися, коли truck stop заповнений", "desc": "Схема варіантів: rest area, склад, запасні стоянки.", "cut": ""}, {"day": 21, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #5: “Home time varies”", "ua": "Розбір оголошення №5: «Home time varies»", "desc": "Вигадане оголошення: що ховається за словами «home time varies» і що вимагати письмово.", "cut": ""}, {"day": 21, "slot": "b", "kind": "short", "variant": "H", "en": "Your first paycheck at a new carrier: what to expect and when", "ua": "Ваш перший чек у нового перевізника: чого чекати і коли", "desc": "Ведучий пояснює типовий графік виплат і що перевірити в розрахунковому листі.", "cut": ""}, {"day": 21, "slot": "c", "kind": "short", "variant": "M", "en": "What is a reefer trailer?", "ua": "Що таке reefer-причіп?", "desc": "Схема: холодильна установка, температурний режим, пальне для неї.", "cut": ""}], "clusters": [{"name": "Спосіб життя / home time", "median": 37316}, {"name": "Новини / правила", "median": 22766}, {"name": "Owner-operator / бізнес", "median": 21684}, {"name": "Пошук роботи / вакансії", "median": 11248}, {"name": "Вибір/зміна перевізника", "median": 11166}, {"name": "Гроші / оплата", "median": 6758}, {"name": "Recruiter / рекрутинг (B2B+B2C)", "median": 6154}]};
+const DATA = {"swan": {"stats": {"total": 67, "shorts": 63, "longs": 4, "h_shorts": 21, "m_shorts": 42, "cuts": 7}, "videos": [{"day": 1, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #1: “Home every weekend”", "ua": "Розбір оголошення №1: «Home every weekend»", "desc": "Розбираємо вигадане оголошення про роботу. Чому фраза «додому щовихідних» нічого не гарантує і яке одне питання треба поставити перевізнику.", "cut": ""}, {"day": 1, "slot": "b", "kind": "short", "variant": "H", "en": "5 questions that make a bad recruiter nervous", "ua": "5 питань, від яких поганий рекрутер нервує", "desc": "П'ять прямих питань перед підписанням: скільки водіїв пішло, зразок settlement, practical чи short милі, простій, home time письмово. Добрий рекрутер відповість на всі.", "cut": ""}, {"day": 1, "slot": "c", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 1: “Still good for home Friday?”", "ua": "Dispatch Files, серія 1: «Ще в силі, що додому в п'ятницю?»", "desc": "Чат із диспетчером: дім знову переносять. Типовий розвиток розмови й правильне питання про графік.", "cut": ""}, {"day": 2, "slot": "a", "kind": "short", "variant": "M", "en": "Practical miles vs short miles in 20 seconds", "ua": "Practical і short милі за 20 секунд", "desc": "На карті: водій проїхав 1 000 миль, а заплатили за 940. Показуємо різницю й дві фрази, які треба спитати.", "cut": ""}, {"day": 2, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: how fast do I get paid?", "ua": "Відповідь водієві: як швидко мені заплатять?", "desc": "Ведучий відповідає на питання з коментарів: як працює графік виплат і що завжди просити в письмовому вигляді.", "cut": ""}, {"day": 2, "slot": "c", "kind": "short", "variant": "M", "en": "CAT scale: how not to be overweight", "ua": "CAT scale: як не отримати перевантаження", "desc": "Схема осей і розподілу вантажу. Що робити, якщо вага на осях не сходиться.", "cut": ""}, {"day": 3, "slot": "a", "kind": "short", "variant": "M", "en": "Where a $1,000 load really goes (example)", "ua": "Куди насправді йде вантаж на $1,000 (приклад)", "desc": "Схема від вантажу до чека водія. Усі цифри підписані як приклад.", "cut": ""}, {"day": 3, "slot": "b", "kind": "short", "variant": "H", "en": "Home time: the answers to listen for", "ua": "Home time: на що звертати увагу у відповідях", "desc": "Ведучий розбирає три типові відповіді про home time: що звучить конкретно, а що розмито.", "cut": ""}, {"day": 3, "slot": "c", "kind": "short", "variant": "M", "en": "How truck drivers shower on the road", "ua": "Як водії-далекобійники миються в дорозі", "desc": "Покроково: truck stop, талон на душ, правила. Популярна тема про побут у рейсі.", "cut": ""}, {"day": 4, "slot": "L", "kind": "long", "variant": "H", "en": "How Truck Drivers Get Paid: Per Mile, Percentage, Hourly (2026)", "ua": "Як платять водіям вантажівок: за милю, відсоток, погодинно (2026)", "desc": "Усі моделі оплати: за милю (practical і short милі), відсоток від вантажу, погодинна й тижнева гарантія. Доплати за простій і відрахування, що питати перевізника.", "chapters": ["Центи за милю", "Відсоток", "Погодинна", "Гарантія", "Detention, layover, stop pay", "Відрахування", "Settlement"], "kw": "how truck drivers get paid · truck driver pay explained", "id": "L1"}, {"day": 4, "slot": "a", "kind": "short", "variant": "M", "en": "Detention: after how many hours should you be paid?", "ua": "Detention: через скільки годин очікування мають платити?", "desc": "Таймер на екрані: що таке вільний час на складі й що фіксувати, щоб отримати оплату.", "cut": ""}, {"day": 4, "slot": "b", "kind": "short", "variant": "H", "en": "Why drivers leave their carrier: 5 reasons", "ua": "Чому водії залишають перевізника: 5 причин", "desc": "П'ять причин, які називають водії: графік, гроші, диспетчер, техніка, ставлення. Короткий розбір без вигаданих історій.", "cut": ""}, {"day": 4, "slot": "c", "kind": "short", "variant": "M", "en": "Per mile or percentage: which pays more when freight is slow?", "ua": "За милю чи відсоток: що платить більше, коли вантажів мало?", "desc": "Кадр із довгого відео про оплату: два графіки по тижнях і коли виграє кожна модель.", "cut": "L1"}, {"day": 5, "slot": "a", "kind": "short", "variant": "M", "en": "OTR vs Regional vs Local in 30 seconds", "ua": "OTR, Regional і Local за 30 секунд", "desc": "Карта й лічильник ночей: скільки днів удома в кожному типі роботи.", "cut": ""}, {"day": 5, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: can I pick my lanes?", "ua": "Відповідь водієві: чи можна обирати маршрути?", "desc": "Ведучий пояснює, як працює вибір лейнів і як про це питати перевізника.", "cut": ""}, {"day": 5, "slot": "c", "kind": "short", "variant": "M", "en": "3 deductions that surprise drivers on a settlement", "ua": "3 відрахування, які дивують водіїв у settlement", "desc": "Escrow, обладнання, паливо: як вони виглядають у розрахунковому листі і що саме питати.", "cut": ""}, {"day": 6, "slot": "a", "kind": "short", "variant": "M", "en": "How much fuel does a semi hold? What a fill-up costs (example)", "ua": "Скільки пального вміщує тягач і скільки коштує заправка (приклад)", "desc": "Об'єм баків, ціна повної заправки на прикладі й чому паливо так впливає на оплату.", "cut": ""}, {"day": 6, "slot": "b", "kind": "short", "variant": "H", "en": "Thinking about leaving your carrier? Try these 3 things first", "ua": "Думаєте піти від перевізника? Спробуйте спершу 3 речі", "desc": "Три практичні кроки перед рішенням: поговорити з диспетчером, зафіксувати проблему письмово, порівняти умови.", "cut": ""}, {"day": 6, "slot": "c", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #2: “Top pay”", "ua": "Розбір оголошення №2: «Top pay»", "desc": "Вигадане оголошення: що означає «найкраща оплата» без цифр і умов і що спитати.", "cut": ""}, {"day": 7, "slot": "a", "kind": "short", "variant": "M", "en": "What a DOT officer checks first", "ua": "Що перевіряє офіцер DOT насамперед", "desc": "Схема огляду: документи, ELD, стан тягача. Три речі, на які дивляться першими.", "cut": ""}, {"day": 7, "slot": "b", "kind": "short", "variant": "H", "en": "What a trucking recruiter's day really looks like", "ua": "Яким насправді буває день рекрутера в тракінгу", "desc": "Рекрутер розповідає про свій день: дзвінки, питання водіїв, що вирішується швидко, а що ні. Без прикрас.", "cut": ""}, {"day": 7, "slot": "c", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 2: “The load changed again”", "ua": "Dispatch Files, серія 2: «Вантаж знову змінили»", "desc": "Чат із диспетчером: маршрут змінюється в останню мить. Що відповісти й що зафіксувати.", "cut": ""}, {"day": 8, "slot": "a", "kind": "short", "variant": "M", "en": "Inside a sleeper cab: what's in it", "ua": "Усередині кабіни зі спальним місцем: що там є", "desc": "Ілюстрована кабіна з підписами: ліжко, холодильник, інвертор, зберігання. Для тих, хто хоче уявити побут у рейсі.", "cut": ""}, {"day": 8, "slot": "b", "kind": "short", "variant": "H", "en": "Staying close to family from the road: 5 habits", "ua": "Як тримати зв'язок із сім'єю з дороги: 5 звичок", "desc": "П'ять простих звичок, що допомагають бути поруч, коли ви в рейсі.", "cut": ""}, {"day": 8, "slot": "c", "kind": "short", "variant": "M", "en": "Hours of Service in 30 seconds", "ua": "Hours of Service за 30 секунд", "desc": "П'ять правил FMCSA на екрані ELD: 11 годин руху, 14-годинне вікно, 30 хвилин перерви, ліміт 60/70 годин, 34-годинний рестарт.", "cut": ""}, {"day": 9, "slot": "L", "kind": "long", "variant": "H", "en": "How to Switch Trucking Companies Without Losing Money", "ua": "Як змінити перевізника й не втратити гроші", "desc": "Коли йти, що перевірити в контракті й settlement, escrow та утримання, лізинг техніки, пауза між роботами. Що вимагати від нового перевізника.", "chapters": ["Коли йти", "Контракт і settlement", "Escrow", "Лізинг техніки", "Пауза між роботами", "Що питати"], "kw": "how to switch trucking companies", "id": "L2"}, {"day": 9, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 3: “Waiting 5 hours at the dock”", "ua": "Dispatch Files, серія 3: «П'ять годин чекаю на доку»", "desc": "Чат із диспетчером про довге очікування на складі і про те, коли починається оплата простою.", "cut": ""}, {"day": 9, "slot": "b", "kind": "short", "variant": "H", "en": "What a good answer from a recruiter sounds like", "ua": "Як звучить добра відповідь рекрутера", "desc": "Ведучий порівнює дві відповіді на те саме питання: конкретну і розмиту.", "cut": ""}, {"day": 9, "slot": "c", "kind": "short", "variant": "M", "en": "What to check in your contract before you leave a carrier", "ua": "Що перевірити в контракті, перш ніж піти від перевізника", "desc": "Кадр із довгого відео: пункти про escrow, лізинг і закриття розрахунків.", "cut": "L2"}, {"day": 10, "slot": "a", "kind": "short", "variant": "M", "en": "Promises vs the contract: 3 things to check in writing", "ua": "Обіцянки проти контракту: 3 пункти, які треба бачити письмово", "desc": "Спліт-екран «що сказали» і «що в документі»: home time, оплата, відрахування.", "cut": ""}, {"day": 10, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: do I need experience?", "ua": "Відповідь водієві: чи потрібен досвід?", "desc": "Ведучий коротко пояснює вимоги до досвіду й що ще дивляться при відборі.", "cut": ""}, {"day": 10, "slot": "c", "kind": "short", "variant": "M", "en": "What you can lose when you switch carriers", "ua": "Що можна втратити при зміні перевізника", "desc": "Утримані кошти, бонуси, вислуга: короткий чекліст перед звільненням.", "cut": "L2"}, {"day": 11, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #3: “Brand-new equipment”", "ua": "Розбір оголошення №3: «Brand-new equipment»", "desc": "Вигадане оголошення: що означає «нова техніка» і що спитати про вік тягачів і обладнання.", "cut": ""}, {"day": 11, "slot": "b", "kind": "short", "variant": "H", "en": "The weekly guarantee: what counts and what doesn't", "ua": "Тижнева гарантія: що в неї входить, а що ні", "desc": "Ведучий пояснює, як рахують гарантований мінімум і що на нього не впливає.", "cut": ""}, {"day": 11, "slot": "c", "kind": "short", "variant": "M", "en": "34-hour restart in 20 seconds", "ua": "34-годинний рестарт за 20 секунд", "desc": "Схема на ELD: коли тиждень обнуляється і що не рахується відпочинком.", "cut": ""}, {"day": 12, "slot": "a", "kind": "short", "variant": "M", "en": "The 30-minute break rule", "ua": "Правило 30-хвилинної перерви", "desc": "Коли її потрібно брати і що вважається перервою.", "cut": ""}, {"day": 12, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: how does getting started work?", "ua": "Відповідь водієві: як проходить старт роботи?", "desc": "Ведучий розповідає, як виглядає початок співпраці й що підготувати заздалегідь.", "cut": ""}, {"day": 12, "slot": "c", "kind": "short", "variant": "M", "en": "What your ELD actually records", "ua": "Що насправді записує ваш ELD", "desc": "Іконки на екрані: час, милі, двигун, місцезнаходження.", "cut": ""}, {"day": 13, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 4: “Where's my layover pay?”", "ua": "Dispatch Files, серія 4: «Де моя оплата за layover?»", "desc": "Чат із диспетчером про ніч в очікуванні вантажу і що йому писати.", "cut": ""}, {"day": 13, "slot": "b", "kind": "short", "variant": "H", "en": "Sign-on bonus: when you actually get it", "ua": "Sign-on бонус: коли його насправді виплачують", "desc": "Ведучий пояснює типові умови виплати бонусу і що уточнити письмово.", "cut": ""}, {"day": 13, "slot": "c", "kind": "short", "variant": "M", "en": "How to check a settlement sheet in 60 seconds", "ua": "Як перевірити розрахунковий лист за 60 секунд", "desc": "Червона ручка на прикладі листа: милі, ставка, відрахування, чистий підсумок.", "cut": ""}, {"day": 14, "slot": "L", "kind": "long", "variant": "H", "en": "Truck Driver Home Time: What “Home Weekly” Really Means", "ua": "Home time водія: що насправді означає «home weekly»", "desc": "OTR, regional, local і dedicated: скільки ночей удома в кожному, як про це питати й що вимагати письмово.", "chapters": ["Що значить home weekly", "OTR", "Regional", "Local", "Dedicated", "Що вимагати письмово"], "kw": "truck driver home time · OTR vs regional vs local", "id": "L3"}, {"day": 14, "slot": "a", "kind": "short", "variant": "M", "en": "Team driving: how two drivers share the clock", "ua": "Командна їзда: як двоє водіїв ділять час", "desc": "Один веде, другий відпочиває в спальнику. Як це вкладається в ліміти HOS.", "cut": ""}, {"day": 14, "slot": "b", "kind": "short", "variant": "H", "en": "Planning your time at home as a driver", "ua": "Як планувати час удома водієві", "desc": "Практичні поради: вихідні, сім'я, відпочинок і що зробити за перший вечір.", "cut": ""}, {"day": 14, "slot": "c", "kind": "short", "variant": "M", "en": "What “home weekly” means in writing", "ua": "Що означає «home weekly» у письмовому вигляді", "desc": "Календар на 4 тижні й слова, які варто бачити в умовах.", "cut": "L3"}, {"day": 15, "slot": "a", "kind": "short", "variant": "M", "en": "Dedicated: what it is and who it fits", "ua": "Dedicated: що це і кому підходить", "desc": "Схема постійного маршруту й чим він відрізняється від OTR.", "cut": ""}, {"day": 15, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: what if I want to leave?", "ua": "Відповідь водієві: що якщо я захочу піти?", "desc": "Ведучий пояснює, як працює розрахунок і що вирішують письмово.", "cut": ""}, {"day": 15, "slot": "c", "kind": "short", "variant": "M", "en": "Nights at home per month: three job types", "ua": "Ночі вдома за місяць: три типи роботи", "desc": "Лічильник ночей для OTR, regional і local.", "cut": "L3"}, {"day": 16, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #4: “Sign-on bonus*”", "ua": "Розбір оголошення №4: «Sign-on bonus*»", "desc": "Вигадане оголошення із зірочкою й дрібним шрифтом: що там зазвичай приховано.", "cut": ""}, {"day": 16, "slot": "b", "kind": "short", "variant": "H", "en": "Truck stop rules nobody explains", "ua": "Правила truck stop, які ніхто не пояснює", "desc": "Паркування, душ, черга на ваги й етикет, про які не пишуть в інструкціях.", "cut": ""}, {"day": 16, "slot": "c", "kind": "short", "variant": "M", "en": "What happens at a shipper, step by step", "ua": "Що відбувається на складі відправника, крок за кроком", "desc": "Двір, ворота, док, чек-ін, пломба: схема на графіці.", "cut": ""}, {"day": 17, "slot": "a", "kind": "short", "variant": "M", "en": "A 14-hour driving day, hour by hour", "ua": "14-годинний робочий день водія, година за годиною", "desc": "Таймлайн HOS: 11 годин руху, 14-годинне вікно, перерва.", "cut": ""}, {"day": 17, "slot": "b", "kind": "short", "variant": "H", "en": "The question that tells you how a carrier treats drivers", "ua": "Питання, яке показує, як перевізник ставиться до водіїв", "desc": "«Скільки водіїв пішло за останні 90 днів?» і як сприймати відповідь.", "cut": ""}, {"day": 17, "slot": "c", "kind": "short", "variant": "M", "en": "5 things to check on a truck before you roll", "ua": "5 речей перевірити на тягачі перед виїздом", "desc": "Чекліст: шини, гальма, світло, зчіпка, рівні рідин.", "cut": ""}, {"day": 18, "slot": "a", "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 5: “Just push through your hours”", "ua": "Dispatch Files, серія 5: «Просто доїдь за годинами»", "desc": "Чат із диспетчером про тиск вийти за ліміти HOS і як відповісти, не псуючи стосунки.", "cut": ""}, {"day": 18, "slot": "b", "kind": "short", "variant": "H", "en": "Reply to @driver: what happens if the truck breaks down?", "ua": "Відповідь водієві: що буде, якщо тягач зламався?", "desc": "Ведучий пояснює, куди дзвонити, як фіксувати час і що з оплатою.", "cut": ""}, {"day": 18, "slot": "c", "kind": "short", "variant": "M", "en": "How drivers sleep in a sleeper cab", "ua": "Як водії сплять у кабіні зі спальним місцем", "desc": "Схема ліжка, штор і температури, що допомагає виспатися в рейсі.", "cut": "L4"}, {"day": 19, "slot": "L", "kind": "long", "variant": "H", "en": "How Truckers Live in the Cab: Sleeping, Showering, Eating", "ua": "Як водії живуть у кабіні: сон, душ, їжа", "desc": "Повний огляд побуту в рейсі: ліжко, душ, їжа, паркування, прання й зв'язок із родиною.", "chapters": ["Сон", "Душ", "Їжа", "Паркування", "Прання", "Сім'я"], "kw": "how do truck drivers shower · life on the road", "id": "L4"}, {"day": 19, "slot": "a", "kind": "short", "variant": "M", "en": "APU, inverter, fridge: what each one does", "ua": "APU, інвертор, холодильник: що це і навіщо", "desc": "Іконки на ілюстрованій кабіні й для чого кожен пристрій.", "cut": ""}, {"day": 19, "slot": "b", "kind": "short", "variant": "H", "en": "Pets on the truck: what to know", "ua": "Тварини в кабіні: що треба знати", "desc": "Ведучий розповідає про правила й домовленості щодо тварин.", "cut": ""}, {"day": 19, "slot": "c", "kind": "short", "variant": "M", "en": "5 easy meals you can make in a cab", "ua": "5 простих страв, які можна приготувати в кабіні", "desc": "Рецепти на інвертор і міні-кухню.", "cut": "L4"}, {"day": 20, "slot": "a", "kind": "short", "variant": "M", "en": "Winter: 7 things to keep in your cab", "ua": "Зима: 7 речей, які мають бути в кабіні", "desc": "Чекліст: ланцюги, обігрів, їжа, вода, ліхтар.", "cut": ""}, {"day": 20, "slot": "b", "kind": "short", "variant": "H", "en": "Can family ride along? What to know", "ua": "Чи можна їхати з сім'єю? Що треба знати", "desc": "Ведучий пояснює, як вирішується питання пасажирів у кабіні.", "cut": ""}, {"day": 20, "slot": "c", "kind": "short", "variant": "M", "en": "Where to park when the truck stop is full", "ua": "Де паркуватися, коли truck stop заповнений", "desc": "Схема варіантів: rest area, склад, запасні стоянки.", "cut": ""}, {"day": 21, "slot": "a", "kind": "short", "variant": "M", "en": "Job Ad Autopsy #5: “Home time varies”", "ua": "Розбір оголошення №5: «Home time varies»", "desc": "Вигадане оголошення: що ховається за словами «home time varies» і що вимагати письмово.", "cut": ""}, {"day": 21, "slot": "b", "kind": "short", "variant": "H", "en": "Your first paycheck at a new carrier: what to expect and when", "ua": "Ваш перший чек у нового перевізника: чого чекати і коли", "desc": "Ведучий пояснює типовий графік виплат і що перевірити в розрахунковому листі.", "cut": ""}, {"day": 21, "slot": "c", "kind": "short", "variant": "M", "en": "What is a reefer trailer?", "ua": "Що таке reefer-причіп?", "desc": "Схема: холодильна установка, температурний режим, пальне для неї.", "cut": ""}], "clusters": [{"name": "Спосіб життя / home time", "median": 37316}, {"name": "Новини / правила", "median": 22766}, {"name": "Owner-operator / бізнес", "median": 21684}, {"name": "Пошук роботи / вакансії", "median": 11248}, {"name": "Вибір/зміна перевізника", "median": 11166}, {"name": "Гроші / оплата", "median": 6758}, {"name": "Recruiter / рекрутинг (B2B+B2C)", "median": 6154}], "news_dummy": null}, "news": {"stats": {"shorts": 11, "longs": 1, "total": 12, "mentions": 6}, "rubrics": [{"id": "Fuel", "name": "Паливо", "desc": "Щотижнева ціна дизеля (EIA), надзвичайні ситуації зі паливом, податкові рішення щодо дизеля."}, {"id": "Rules", "name": "Правила", "desc": "FMCSA, DOT, HOS, ELD, DataQs: що змінилося для водія і що з цим робити."}, {"id": "Market", "name": "Ринок", "desc": "Ставки, обсяги перевезень, замовлення техніки, прогнози на сезон."}, {"id": "Road", "name": "Дорога", "desc": "Стоянки, рейди, закриття доріг, закони штатів, крадіжки вантажів, безпека."}, {"id": "Trucks", "name": "Техніка й технології", "desc": "Відкликання, нові тягачі, безпілотні вантажівки, технології для флотів."}], "days": [{"date": "27.10", "weekday": "Вівторок", "items": [{"date": "27.10", "weekday": "Вівторок", "slot": "1", "rubric": "Fuel", "variant": "M", "en": "Diesel this week: the national average and what changed", "ua": "Дизель за тиждень: середня ціна по країні й що змінилося", "desc": "Цифра EIA за понеділок 26.10 і зміна до минулого тижня (цифру беремо в день виходу). Для порівняння: 5 жовтня середня була $6.199, мінус 18.3 цента.", "sources": "EIA; Logistics Management", "swan": false, "kind": "short"}, {"date": "27.10", "weekday": "Вівторок", "slot": "2", "rubric": "Fuel", "variant": "H", "en": "Red-dyed diesel: what the IRS relief really means", "ua": "Червоний дизель: що насправді означає пом'якшення IRS", "desc": "14 жовтня IRS заявила, що не штрафуватиме за фарбований дизель на дорогах, з ретроактивною дією від 1 жовтня. Але кожен штат має видати власний наказ.", "sources": "Land Line", "swan": true, "kind": "short"}]}, {"date": "28.10", "weekday": "Середа", "items": [{"date": "28.10", "weekday": "Середа", "slot": "1", "rubric": "Rules", "variant": "H", "en": "FMCSA adds ethanol and heating oil to the fuel-hauler HOS waiver", "ua": "FMCSA додала етанол і мазут до дозволу з HOS для перевізників пального", "desc": "Загальнонаціональне пом'якшення HOS для перевізників пального тепер охоплює й етанол та мазут і діє до середини грудня.", "sources": "Overdrive; TT News; Land Line", "swan": false, "kind": "short"}, {"date": "28.10", "weekday": "Середа", "slot": "2", "rubric": "Rules", "variant": "M", "en": "DataQs: all 50 states now use the updated review process", "ua": "DataQs: усі 50 штатів перейшли на оновлений порядок перегляду", "desc": "Як водієві оскаржити неточні дані з безпеки і що змінилося в процесі.", "sources": "Land Line; Trucknews.com; The Trucker", "swan": true, "kind": "short"}]}, {"date": "29.10", "weekday": "Четвер", "items": [{"date": "29.10", "weekday": "Четвер", "slot": "1", "rubric": "Market", "variant": "M", "en": "Truck tonnage rose 0.8% in September: what it means for rates", "ua": "Обсяги перевезень у вересні зросли на 0,8%: що це означає для ставок", "desc": "Індекс ATA Truck Tonnage +0,8%. За оцінкою ACT, потужності скорочуються раніше, ніж звичайно перед святковим сезоном.", "sources": "ATA via TT News; ACT via Trucknews.com", "swan": false, "kind": "short"}, {"date": "29.10", "weekday": "Четвер", "slot": "2", "rubric": "Market", "variant": "M", "en": "Dry van cost per mile: +30% in 2026, +10% in 2027", "ua": "Вартість милі для dry van: +30% у 2026, +10% у 2027", "desc": "Прогноз C.H. Robinson для вантажного ринку США й що означає зростання вартості перевезень.", "sources": "C.H. Robinson Edge Report, жовтень 2026", "swan": true, "kind": "short"}]}, {"date": "30.10", "weekday": "П'ятниця", "items": [{"date": "30.10", "weekday": "П'ятниця", "slot": "1", "rubric": "Road", "variant": "M", "en": "$200 million for truck parking: what's coming", "ua": "$200 мільйонів на стоянки для вантажівок: що буде", "desc": "DOT оголосив розширення паркування для вантажівок. Land Line пише про тисячі нових місць у 12 штатах.", "sources": "FMCSA/DOT; Land Line", "swan": false, "kind": "short"}, {"date": "30.10", "weekday": "П'ятниця", "slot": "2", "rubric": "Road", "variant": "H", "en": "Chain laws for winter 2026–27: what you need to carry", "ua": "Закони про ланцюги на зиму 2026–27: що треба мати", "desc": "Огляд правил щодо ланцюгів по штатах для водіїв перед снігом.", "sources": "The Trucker", "swan": true, "kind": "short"}]}, {"date": "31.10", "weekday": "Субота", "items": [{"date": "31.10", "weekday": "Субота", "slot": "1", "rubric": "Road", "variant": "M", "en": "Inspection sweep: 78 drivers and 25 trucks out of service", "ua": "Рейд інспекторів: 78 водіїв і 25 тягачів зняли з рейсу", "desc": "Operation Saturday Night Fever на південному сході за участі FMCSA і DHS. Що перевірити перед виїздом, щоб не потрапити в таку статистику.", "sources": "Overdrive", "swan": false, "kind": "short"}, {"date": "31.10", "weekday": "Субота", "slot": "2", "rubric": "Road", "variant": "M", "en": "Cargo theft: $150 million in AI-related losses", "ua": "Крадіжки вантажів: $150 мільйонів збитків, пов'язаних зі ШІ", "desc": "Федеральні прокурори висунули звинувачення водієві у схемі з 24 вантажами на понад $12 млн. Як захистити вантаж і себе.", "sources": "Land Line; Overdrive", "swan": true, "kind": "short"}]}, {"date": "01.11", "weekday": "Неділя", "items": [{"date": "01.11", "weekday": "Неділя", "slot": "1", "rubric": "Trucks", "variant": "M", "en": "Freightliner recall: fuel leaks and engine stalls", "ua": "Відкликання Freightliner: витоки пального і зупинки двигуна", "desc": "Що зазначено у відкликанні й як перевірити свій тягач за VIN на сайті NHTSA.", "sources": "Land Line", "swan": false, "kind": "short"}, {"date": "01.11", "weekday": "Неділя", "slot": "L", "rubric": "Weekly", "variant": "H", "en": "The Weekly Haul #1: the week in trucking", "ua": "The Weekly Haul №1: тиждень у тракінгу", "desc": "Усі новини тижня за 6–8 хвилин: паливо й дизель, правила HOS і IRS, ринок і ставки, стоянки й рейди, відкликання. Із джерелами на екрані й короткою згадкою Swan Transportation.", "sources": "Усі джерела тижня", "swan": true, "kind": "long"}]}], "cross": ["3-секундний кінцевий слайд у частині шортсів: «Swan Transportation. Link in bio.»", "Недільний випуск: коротка згадка Swan на 20 секунд наприкінці.", "У профілі новинного каналу посилання на Swan Transportation.", "У каналі Swan: нарізки «Новина тижня» з посиланням на новинний канал."], "sources": ["FMCSA, DOT, NHTSA", "EIA (щотижнева ціна дизеля)", "ATA, ACT, C.H. Robinson", "Overdrive, Land Line, TT News", "The Trucker, CDLLife, Trucknews.com"], "proof": [{"name": "Mutha Trucker", "text": "щоденні новини, до 8 хв; 14–73K переглядів на ролик за останні випуски"}, {"name": "Trucking Life with Shawn", "text": "розбори DOT і правил: «Inside a Real Weigh Station» 466K"}, {"name": "Driving Academy", "text": "новинні теми дали найкращі ролики серії: страйк 28K"}, {"name": "Місцеві ТБ (KFVS12)", "text": "паливо через гроші водія: «$1,000+ to fill a semi» 947K"}]}};
 </script>
 <script>
 (function () {
-  var D = DATA, S = D.stats;
+  var SW = DATA.swan, NW = DATA.news, S = SW.stats;
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]; }); };
 
-  var names = ["overview", "plan", "format"];
-  function show(name) {
-    if (names.indexOf(name) < 0) name = "overview";
-    names.forEach(function (n) {
-      $(n).classList.toggle("on", n === name);
-      $("t-" + n).setAttribute("aria-selected", String(n === name));
-    });
+  /* ---------- routing: #swan/plan, #news/week ---------- */
+  var SUBS = {
+    swan: [["overview", "Огляд"], ["plan", "План на 21 день"], ["format", "Формат"]],
+    news: [["how", "Як працює"], ["week", "Перший тиждень"]]
+  };
+  var cur = {main: "swan", sub: "overview"};
+  function go(main, sub) {
+    if (!SUBS[main]) main = "swan";
+    if (!SUBS[main].some(function (s) { return s[0] === sub; })) sub = SUBS[main][0][0];
+    cur = {main: main, sub: sub};
+    document.querySelectorAll("section.tab").forEach(function (s) { s.classList.toggle("on", s.id === main + "-" + sub); });
+    $("m-swan").setAttribute("aria-selected", String(main === "swan"));
+    $("m-news").setAttribute("aria-selected", String(main === "news"));
+    $("top").classList.toggle("news", main === "news");
+    $("subTabs").innerHTML = SUBS[main].map(function (s) { return '<button role="tab" data-sub="' + s[0] + '" aria-selected="' + (s[0] === sub) + '">' + s[1] + '</button>'; }).join("");
     window.scrollTo(0, 0);
-    try { history.replaceState(null, "", "#" + name); } catch (e) {}
+    try { history.replaceState(null, "", "#" + main + "/" + sub); } catch (e) {}
   }
-  document.querySelectorAll(".tabs button").forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.tab); }); });
-  show(location.hash.replace("#", "") || "overview");
+  document.querySelectorAll(".mainTabs button").forEach(function (b) { b.addEventListener("click", function () { go(b.dataset.main, SUBS[b.dataset.main][0][0]); }); });
+  $("subTabs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) go(cur.main, b.dataset.sub); });
+  var h = location.hash.replace("#", "").split("/");
+  go(h[0] || "swan", h[1] || "");
+  window.addEventListener("hashchange", function () {
+    var p = location.hash.replace("#", "").split("/");
+    if (p[0] !== cur.main || p[1] !== cur.sub) go(p[0] || "swan", p[1] || "");
+  });
 
-  /* overview */
+  /* ---------- swan overview ---------- */
   $("h-total").textContent = S.total;
   $("h-shorts").textContent = S.shorts;
   $("h-longs").textContent = S.longs;
   $("tiles").innerHTML = [[S.total, "відео за 21 день"], [S.shorts, "шортсів, по три щодня"], [S.longs, "довгі відео"], [2, "формати виробництва"]].map(function (t) { return '<div class="tile"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>'; }).join("");
-  var mx = Math.max.apply(null, D.clusters.map(function (c) { return c.median; }));
-  $("bars").innerHTML = D.clusters.map(function (c) {
+  var mx = Math.max.apply(null, SW.clusters.map(function (c) { return c.median; }));
+  $("bars").innerHTML = SW.clusters.map(function (c) {
     return '<div class="brow"><span>' + esc(c.name.replace(" (B2B+B2C)", "")) + '</span><div class="tr"><i style="width:' + Math.round(c.median / mx * 100) + '%"></i></div><b>' + Math.round(c.median / 1000) + 'K</b></div>';
   }).join("");
 
-  /* plan */
+  /* ---------- swan plan ---------- */
   var f = "all";
   var FL = [["all", "Усі"], ["short", "Шортси"], ["long", "Довгі"], ["H", "Motion + HeyGen"], ["M", "Motion"]];
   function chips() {
     $("pf").innerHTML = FL.map(function (x) { return '<button class="chip' + (x[0] === "H" ? " h" : "") + '" data-f="' + x[0] + '" aria-pressed="' + (f === x[0]) + '">' + x[1] + '</button>'; }).join("");
   }
   function item(v) {
-    var h = v.variant === "H";
-    var cls = "vc" + (h ? " h" : "") + (v.kind === "long" ? " long" : "");
+    var hh = v.variant === "H";
+    var cls = "vc" + (hh ? " h" : "") + (v.kind === "long" ? " long" : "");
     var kind = v.kind === "long" ? '<span class="tg long">Довге · YouTube</span>' : '<span class="tg dim">Шортс ' + v.slot.toUpperCase() + '</span>';
     var cut = v.cut ? '<span class="tg dim">Нарізка з довгого</span>' : "";
-    return '<article class="' + cls + '"><div class="tags">' + kind + '<span class="tg' + (h ? " h" : "") + '">' + (h ? "Motion + HeyGen" : "Motion") + '</span>' + cut + '</div>' +
+    return '<article class="' + cls + '"><div class="tags">' + kind + '<span class="tg' + (hh ? " h" : "") + '">' + (hh ? "Motion + HeyGen" : "Motion") + '</span>' + cut + '</div>' +
       '<div class="en">' + esc(v.en) + '</div><div class="ua">' + esc(v.ua) + '</div><p class="ds">' + esc(v.desc) + '</p>' +
       (v.kind === "long" ? '<div class="kw">' + esc(v.kw) + '</div><div class="chap">' + v.chapters.map(function (c, i) { return '<span>' + (i + 1) + '. ' + esc(c) + '</span>'; }).join("") + '</div>' : "") +
       '</article>';
@@ -289,7 +384,7 @@ const DATA = {"stats": {"total": 67, "shorts": 63, "longs": 4, "h_shorts": 21, "
     for (var w = 0; w < 3; w++) {
       var boxes = "";
       for (var d = w * 7 + 1; d <= w * 7 + 7; d++) {
-        var vs = D.videos.filter(function (v) {
+        var vs = SW.videos.filter(function (v) {
           if (v.day !== d) return false;
           return f === "all" || (f === "short" && v.kind === "short") || (f === "long" && v.kind === "long") || (f === "H" && v.variant === "H") || (f === "M" && v.variant === "M");
         });
@@ -305,7 +400,7 @@ const DATA = {"stats": {"total": 67, "shorts": 63, "longs": 4, "h_shorts": 21, "
   $("pf").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; f = b.dataset.f; render(); });
   render();
 
-  /* format */
+  /* ---------- swan format ---------- */
   var PH = 'M20 4h120a16 16 0 0 1 16 16v240a16 16 0 0 1-16 16H20A16 16 0 0 1 4 260V20A16 16 0 0 1 20 4z';
   function phone(inner) { return '<svg class="mock" viewBox="0 0 160 280" role="img" aria-label="Схема кадру">' + '<path d="' + PH + '" fill="#0D0E10" stroke="#34383F" stroke-width="3"/>' + inner + '</svg>'; }
   var avatar = function (cx, cy, s, col) { return '<g transform="translate(' + cx + ' ' + cy + ') scale(' + s + ')"><circle cx="0" cy="-26" r="19" fill="' + col + '"/><path d="M-42 34c0-24 18-38 42-38s42 14 42 38v6h-84z" fill="' + col + '"/></g>'; };
@@ -325,6 +420,25 @@ const DATA = {"stats": {"total": 67, "shorts": 63, "longs": 4, "h_shorts": 21, "
     '<article class="fc">' + MOTION + '<div><span class="mono">Без людини</span><h3>Motion</h3>' +
     '<p>Ілюстрована графіка без ведучого: чат із диспетчером, розбір оголошення червоною ручкою, екран ELD, карта, великий текст і голос за кадром.</p>' +
     '<ul><li>У плані: ' + S.m_shorts + ' шортсів</li><li>Читається без звуку</li><li>Однаковий стиль у всіх відео</li></ul></div></article>';
+
+  /* ---------- news ---------- */
+  var NS = NW.stats;
+  $("ntiles").innerHTML = [[NS.shorts, "шортсів у перший тиждень"], [NS.longs, "випуск в неділю"], [5, "рубрик"], [NS.mentions, "згадок Swan за тиждень"]].map(function (t) { return '<div class="tile n"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>'; }).join("");
+  $("rgrid").innerHTML = NW.rubrics.map(function (r) { return '<div class="rc"><b>' + esc(r.name) + '</b><span>' + esc(r.desc) + '</span></div>'; }).join("");
+  $("cross").innerHTML = NW.cross.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join("");
+  $("srcs").innerHTML = NW.sources.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join("");
+  $("proof").innerHTML = NW.proof.map(function (p) { return '<b>' + esc(p.name) + '</b><span>' + esc(p.text) + '</span>'; }).join("");
+  var RN = {}; NW.rubrics.forEach(function (r) { RN[r.id] = r.name; }); RN.Weekly = "Випуск тижня";
+  function nitem(v) {
+    var hh = v.variant === "H";
+    var cls = "vc" + (hh ? " h" : "") + (v.kind === "long" ? " long" : "");
+    return '<article class="' + cls + '"><div class="tags">' + (v.kind === "long" ? '<span class="tg long">Випуск · YouTube · 6–8 хв</span>' : '<span class="tg dim">Шортс</span>') +
+      '<span class="tg nr">' + esc(RN[v.rubric] || v.rubric) + '</span><span class="tg' + (hh ? " h" : "") + '">' + (hh ? "Motion + HeyGen" : "Motion") + '</span>' + (v.swan ? '<span class="tg sw">Згадка Swan</span>' : "") + '</div>' +
+      '<div class="en">' + esc(v.en) + '</div><div class="ua">' + esc(v.ua) + '</div><p class="ds">' + esc(v.desc) + '</p><div class="src"><b>Джерела</b>' + esc(v.sources) + '</div></article>';
+  }
+  $("nweek").innerHTML = NW.days.map(function (d) {
+    return '<div class="db"><div class="day"><b class="sm">' + esc(d.date) + '</b><span>' + esc(d.weekday) + '</span></div><div class="items">' + d.items.map(nitem).join("") + '</div></div>';
+  }).join("");
 })();
 </script>
 </body>
