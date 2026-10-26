@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Overpass:wght@400;600;700;800&family=Overpass+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: a presentation on tabs. Sticky bar with the tabs, content max 1160px.
-   One dark "asphalt" look by choice; yellow is the single accent, blue marks HeyGen. */
+/* Layout: three tabs (overview, 21-day plan, format). Sticky bar, content max 1160px.
+   One dark "asphalt" look by choice; yellow is the accent, blue marks the HeyGen format. */
 :root {
   --bg: #111214;
   --panel: #1A1C1F;
@@ -20,8 +20,6 @@
   --dim: #A5A29B;
   --sign: #FFD200;
   --heygen: #5AA9E6;
-  --good: #3DDC84;
-  --no: #8D8A84;
   --display: "Anton", "Impact", "Arial Narrow", sans-serif;
   --body: "Overpass", "Segoe UI", system-ui, sans-serif;
   --mono: "Overpass Mono", ui-monospace, Consolas, monospace;
@@ -37,7 +35,6 @@ a { color: var(--sign); text-underline-offset: 3px; }
 .mono { font-family: var(--mono); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
 .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
 
-/* top bar */
 .bar { position: sticky; top: 0; z-index: 10; background: rgba(17,18,20,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
 .bar .wrap { display: flex; align-items: center; gap: 24px; padding-block: 10px; }
 .brand { display: flex; align-items: center; gap: 12px; flex: none; }
@@ -45,7 +42,7 @@ a { color: var(--sign); text-underline-offset: 3px; }
 .brand span { font-family: var(--display); font-size: 21px; text-transform: uppercase; white-space: nowrap; }
 .tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
 .tabs::-webkit-scrollbar { display: none; }
-.tabs button { all: unset; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 15px; padding: 9px 14px; border-radius: 8px; color: var(--dim); border: 1px solid transparent; }
+.tabs button { all: unset; cursor: pointer; white-space: nowrap; font-weight: 700; font-size: 15px; padding: 9px 16px; border-radius: 8px; color: var(--dim); }
 .tabs button:hover { color: var(--fg); }
 .tabs button[aria-selected="true"] { color: #111; background: var(--sign); }
 .tabs button:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
@@ -57,31 +54,20 @@ section.tab.on { display: block; }
 h2.t { font-size: clamp(34px, 5vw, 56px); }
 h3.s { font-size: 26px; }
 .lede { font-size: 19px; color: #DAD7D0; }
+.note { font-size: 14px; color: var(--dim); }
 
-/* hero */
-.hero h1 { font-size: clamp(54px, 9vw, 120px); line-height: 1.02; }
+.hero h1 { font-size: clamp(52px, 9vw, 118px); line-height: 1.02; }
 .hero h1 em { font-style: normal; color: var(--sign); }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .tile { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--sign); padding: 18px 20px; }
-.tile b { display: block; font-family: var(--display); font-weight: 400; font-size: 58px; line-height: 1; color: var(--fg); }
+.tile b { display: block; font-family: var(--display); font-weight: 400; font-size: 58px; line-height: 1; }
 .tile span { color: var(--dim); font-size: 15px; }
 
-/* steps */
 .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .step { background: var(--panel); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
 .step .n { font-family: var(--display); font-size: 34px; color: var(--sign); line-height: 1; }
 .step p { font-size: 16px; color: #CFCBC3; }
 
-/* rhythm */
-.rhythm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); }
-.slot { padding: 20px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); border-right: 1px solid var(--line); border-top: 4px solid var(--sign); }
-.slot:last-child { border-right: 0; }
-.slot.h { border-top-color: var(--heygen); }
-.slot.f { border-top-color: var(--no); }
-.slot h3 { font-size: 24px; }
-.slot p { font-size: 15.5px; color: #CFCBC3; }
-
-/* funnel */
 .funnel { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .fs { background: var(--panel); border: 1px solid var(--line); padding: 16px 18px; position: relative; }
 .fs b { display: block; font-size: 18px; }
@@ -89,134 +75,74 @@ h3.s { font-size: 26px; }
 .fs::after { content: "→"; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--sign); font-size: 22px; z-index: 1; }
 .fs:last-child::after { display: none; }
 
-/* bars */
 .bars { display: flex; flex-direction: column; gap: 10px; }
 .brow { display: grid; grid-template-columns: minmax(150px, 260px) minmax(0, 1fr) 70px; gap: 14px; align-items: center; font-size: 15.5px; }
 .brow .tr { height: 14px; background: var(--panel-2); border-radius: 7px; overflow: hidden; }
 .brow .tr i { display: block; height: 100%; background: var(--sign); border-radius: 7px; }
 .brow b { font-family: var(--mono); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-.note { font-size: 14px; color: var(--dim); }
 
-/* downloads */
 .dl { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--sign); color: #111; font-weight: 800; text-decoration: none; padding: 12px 20px; border-radius: 10px; font-size: 16px; }
 .btn.ghost { background: transparent; color: var(--fg); border: 2px solid var(--line); }
 .btn:hover { filter: brightness(1.08); }
 
-/* table generic */
-.tbl { overflow-x: auto; border: 1px solid var(--line); }
-table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 15px; }
-th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-family: var(--mono); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); background: var(--panel); }
-tr:last-child td { border-bottom: 0; }
-td.num { font-family: var(--mono); color: var(--sign); white-space: nowrap; }
-
-/* patterns */
-.pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.pc { background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--good); padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.pc.no { border-left-color: var(--no); background: #16171A; }
-.pc.no h3, .pc.no p { color: var(--no); }
-.pc header { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
-.pc h3 { font-size: 27px; }
-.mark { flex: none; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--good); color: var(--good); white-space: nowrap; }
-.pc.no .mark { border-color: var(--no); color: var(--no); }
-.pc dl { margin: 0; display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 8px 12px; font-size: 15px; }
-.pc dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); padding-top: 3px; }
-.pc dd { margin: 0; color: #D6D2CA; }
-.pc .cnt { font-family: var(--display); font-size: 30px; color: var(--sign); }
-
-/* bank */
+/* plan */
 .ctrl { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.chip { all: unset; cursor: pointer; font-size: 14px; font-weight: 700; padding: 7px 13px; border-radius: 20px; border: 1px solid var(--line); color: var(--dim); background: var(--panel); }
+.chip { all: unset; cursor: pointer; font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 20px; border: 1px solid var(--line); color: var(--dim); background: var(--panel); }
 .chip[aria-pressed="true"] { background: var(--sign); color: #111; border-color: var(--sign); }
-.chip:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
 .chip.h[aria-pressed="true"] { background: var(--heygen); border-color: var(--heygen); }
-input[type=search] { background: var(--panel); border: 1px solid var(--line); color: var(--fg); font: 600 15px var(--body); padding: 9px 14px; border-radius: 10px; min-width: 220px; flex: 1 1 220px; max-width: 360px; }
-input[type=search]::placeholder { color: var(--dim); }
-.brk { display: flex; flex-direction: column; border: 1px solid var(--line); }
-.bi { display: grid; grid-template-columns: 56px 92px minmax(0, 1.6fr) minmax(0, 1fr) 70px; gap: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line); align-items: center; font-size: 15px; }
-.bi:last-child { border-bottom: 0; }
-.bi:nth-child(even) { background: #151618; }
-.bi .id { font-family: var(--mono); color: var(--dim); font-size: 13px; }
-.bi .hook { font-weight: 700; }
-.bi .nt { color: var(--dim); font-size: 14px; }
-.bi .dy { font-family: var(--mono); font-size: 13px; color: var(--sign); text-align: right; }
-.tg { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; border: 1px solid var(--sign); color: var(--sign); text-align: center; white-space: nowrap; }
+.chip:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
+.weeks { display: flex; flex-direction: column; gap: 36px; }
+.week h3 { font-size: 28px; color: var(--sign); margin-bottom: 14px; }
+.vlist { display: flex; flex-direction: column; gap: 10px; }
+.vc { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 20px; background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--sign); padding: 18px 22px; }
+.vc.h { border-left-color: var(--heygen); }
+.vc.long { background: linear-gradient(90deg, rgba(255,210,0,.07), var(--panel) 45%); border-color: #4A4320; border-left-width: 5px; }
+.day { text-align: center; }
+.day b { display: block; font-family: var(--display); font-weight: 400; font-size: 44px; line-height: 1; }
+.day span { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--dim); text-transform: uppercase; }
+.vbody { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tg { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; border: 1px solid var(--sign); color: var(--sign); }
 .tg.h { border-color: var(--heygen); color: var(--heygen); }
-.empty { padding: 30px; color: var(--dim); }
+.tg.long { background: var(--sign); color: #111; }
+.tg.dim { border-color: var(--line); color: var(--dim); }
+.en { font-size: 20px; font-weight: 800; line-height: 1.25; }
+.ua { font-size: 17px; color: #C9C5BC; line-height: 1.3; }
+.ds { font-size: 15.5px; color: #D6D2CA; margin-top: 4px; }
+.chap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chap span { font-size: 13px; padding: 3px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--line); color: #DAD7D0; }
+.kw { font-family: var(--mono); font-size: 12px; color: var(--sign); }
 
-/* calendar */
-.legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 14.5px; color: var(--dim); }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
-.week { display: flex; flex-direction: column; gap: 10px; }
-.week h3 { font-size: 24px; color: var(--sign); }
-.days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
-.day { background: var(--panel); border: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; }
-.day .dh { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); }
-.day .dn { font-family: var(--display); font-size: 24px; line-height: 1; }
-.day .lg { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; background: var(--sign); color: #111; padding: 2px 7px; border-radius: 5px; font-weight: 600; }
-.day ul { list-style: none; margin: 0; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 8px; }
-.day li { font-size: 12.5px; line-height: 1.3; padding-left: 10px; border-left: 3px solid var(--sign); color: #E4E1DA; }
-.day li.h { border-left-color: var(--heygen); }
-.day li.x, .day li.d, .day li.r { border-left-color: var(--no); color: #BDBAB3; }
-.day li small { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
-.day li.rdy small::after { content: " · готовий шаблон"; color: var(--good); }
-.day.long { border-color: var(--sign); }
-.lt { font-size: 12.5px; font-weight: 700; padding: 6px 10px; background: rgba(255,210,0,.1); color: var(--sign); border-bottom: 1px solid var(--line); line-height: 1.3; }
-
-/* long videos */
-.lgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.lc { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--sign); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.lc .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.lc h3 { font-size: 30px; line-height: 1.05; }
-.lc .kw { font-family: var(--mono); font-size: 12.5px; color: var(--sign); }
-.lc p { font-size: 15px; color: #CFCBC3; }
-.chap { display: flex; flex-wrap: wrap; gap: 6px; }
-.chap span { font-size: 13px; padding: 4px 10px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--line); color: #DAD7D0; }
-.chap span b { color: var(--sign); font-family: var(--mono); font-weight: 600; margin-right: 6px; }
-.lc .cuts { font-size: 14px; color: var(--dim); }
-
-/* variants */
-.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.vc { background: var(--panel); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.vc.m { border-top: 4px solid var(--sign); }
-.vc.y { border-top: 4px solid var(--sign); background-image: linear-gradient(180deg, rgba(90,169,230,.10), transparent 40%); }
-.vc.h { border-top: 4px solid var(--heygen); }
-.vc h3 { font-size: 30px; }
-.vc p { font-size: 15.5px; color: #CFCBC3; }
-.vc .lab { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
-.mock { width: 100%; max-width: 230px; align-self: center; }
-.duel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; background: var(--panel); border: 1px solid var(--line); padding: 28px; align-items: center; }
-.duel h3 { font-size: 34px; }
-.dlist { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.dlist div { background: var(--panel-2); border: 1px solid var(--line); padding: 12px 14px; font-size: 14px; }
-.dlist b { display: block; font-family: var(--mono); color: var(--sign); font-size: 12px; margin-bottom: 4px; }
+/* format */
+.fgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.fc { background: var(--panel); border: 1px solid var(--line); padding: 26px; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 22px; border-top: 4px solid var(--sign); }
+.fc.h { border-top-color: var(--heygen); background-image: linear-gradient(180deg, rgba(90,169,230,.09), transparent 40%); }
+.fc h3 { font-size: 34px; margin-bottom: 10px; }
+.fc p { font-size: 16px; color: #CFCBC3; margin-bottom: 8px; }
+.fc ul { margin: 6px 0 0; padding-left: 1.1em; color: #D6D2CA; font-size: 15.5px; display: flex; flex-direction: column; gap: 4px; }
+.mock { width: 100%; }
+.fall { background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--sign); padding: 22px 26px; display: flex; flex-direction: column; gap: 8px; }
+.fall h3 { font-size: 26px; }
+.fall p { max-width: 80ch; font-size: 17px; color: #E0DDD5; }
 
 footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--dim); font-size: 14px; }
 
-@media (max-width: 1020px) {
-  .days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .vgrid { grid-template-columns: minmax(0, 1fr); }
-  .vc { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 24px; }
-  .vc .mock { grid-row: 1 / span 5; }
-  .bi { grid-template-columns: 48px 86px minmax(0, 1fr) 60px; }
-  .bi .nt { display: none; }
+@media (max-width: 900px) {
+  .fgrid { grid-template-columns: minmax(0, 1fr); }
 }
-@media (max-width: 760px) {
+@media (max-width: 720px) {
   .tiles, .funnel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fs::after { display: none; }
-  .steps, .rhythm, .pgrid, .lgrid { grid-template-columns: minmax(0, 1fr); }
-  .slot { border-right: 0; border-bottom: 1px solid var(--line); }
-  .slot:last-child { border-bottom: 0; }
-  .days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .duel { grid-template-columns: minmax(0, 1fr); }
-  .dlist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
   .brow { grid-template-columns: minmax(0, 1fr) 58px; }
   .brow .tr { grid-column: 1 / -1; grid-row: 2; }
   .brand span { display: none; }
-  .vc { display: flex; }
-  .bi { grid-template-columns: 44px minmax(0, 1fr) 54px; }
-  .bi .tg { display: none; }
+  .vc { grid-template-columns: 1fr; gap: 6px; padding: 16px; }
+  .day { text-align: left; display: flex; align-items: baseline; gap: 10px; }
+  .day b { font-size: 32px; }
+  .fc { grid-template-columns: minmax(0, 1fr); }
+  .mock { max-width: 170px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
@@ -228,49 +154,35 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
     <div class="brand"><b>SW</b><span>Swan Trans</span></div>
     <nav class="tabs" role="tablist" aria-label="Розділи презентації">
       <button role="tab" id="t-overview" aria-selected="true" aria-controls="overview" data-tab="overview">Огляд</button>
-      <button role="tab" id="t-take" aria-selected="false" aria-controls="take" data-tab="take">Що беремо</button>
-      <button role="tab" id="t-bank" aria-selected="false" aria-controls="bank" data-tab="bank">Банк тем</button>
-      <button role="tab" id="t-plan" aria-selected="false" aria-controls="plan" data-tab="plan">План 21 день</button>
-      <button role="tab" id="t-long" aria-selected="false" aria-controls="long" data-tab="long">Довгі відео</button>
-      <button role="tab" id="t-variants" aria-selected="false" aria-controls="variants" data-tab="variants">Варіанти</button>
+      <button role="tab" id="t-plan" aria-selected="false" aria-controls="plan" data-tab="plan">План на 21 день</button>
+      <button role="tab" id="t-format" aria-selected="false" aria-controls="format" data-tab="format">Формат</button>
     </nav>
   </div>
 </div>
 
 <main>
-<!-- ========== OVERVIEW ========== -->
 <section class="tab on wrap" id="overview" role="tabpanel" aria-labelledby="t-overview">
   <div class="stack">
     <div class="head hero">
       <span class="mono">Instagram Reels · TikTok · YouTube · 21 день</span>
-      <h1><em id="h-shorts"></em> шортсів<br>і <em id="h-longs"></em> довгих відео</h1>
-      <p class="lede">Три коротких відео щодня і довге пояснення раз на 4–5 днів. Теми беремо з роликів, які вже набрали мільйони переглядів, і робимо свої у трьох варіантах: Motion, Motion + HeyGen і HeyGen.</p>
+      <h1><em id="h-total"></em> відео<br>за <em>21</em> день</h1>
+      <p class="lede"><span id="h-shorts"></span> коротких відео, по одному щодня, і <span id="h-longs"></span> довгі пояснення на YouTube раз на 4–5 днів. Теми беремо з роликів, які вже набрали мільйони переглядів, і робимо свої.</p>
     </div>
-
     <div class="tiles" id="tiles"></div>
 
     <div class="stack" style="gap:20px">
       <h2 class="t">Як це працює</h2>
       <div class="steps">
-        <div class="step"><span class="n">1</span><h3 class="s">Тема</h3><p>Беремо тему й формулу з відео, які вже заходили: день у дорозі, гроші, правда про компанії, техніка, home time. Не копіюємо чужі ролики, робимо свою версію.</p></div>
-        <div class="step"><span class="n">2</span><h3 class="s">Виробництво</h3><p>Один сценарій у трьох варіантах. Motion робимо шаблонами, HeyGen дає ведучого, поєднання тримає увагу обличчям і пояснює графікою.</p></div>
-        <div class="step"><span class="n">3</span><h3 class="s">Заклик</h3><p>Кожен ролик закінчується: «Take the 60-second Swan Check. Link in bio.» Водій залишає короткі дані, рекрутер дзвонить.</p></div>
-      </div>
-    </div>
-
-    <div class="stack" style="gap:20px">
-      <h2 class="t">Ритм дня: 3 слоти</h2>
-      <div class="rhythm">
-        <div class="slot"><span class="mono">Слот 1</span><h3>Motion</h3><p>Шаблон Remotion: чат, червона ручка, ELD, карта, великий текст. 21 ролик за 21 день.</p></div>
-        <div class="slot h"><span class="mono">Слот 2</span><h3>HeyGen</h3><p>Ведучий пояснює або відповідає водієві, поверх графіка. 21 ролик за 21 день.</p></div>
-        <div class="slot f"><span class="mono">Слот 3</span><h3>Flex</h3><p id="flexp"></p></div>
+        <div class="step"><span class="n">1</span><h3 class="s">Тема</h3><p>Життя в дорозі, гроші, правда про компанії, home time, техніка. Беремо тему й формулу з відео, які вже заходили, і робимо свою версію.</p></div>
+        <div class="step"><span class="n">2</span><h3 class="s">Виробництво</h3><p>Два формати: Motion + HeyGen і чистий Motion. Сценарії однакові, тому за потреби переходимо на Motion без зміни плану.</p></div>
+        <div class="step"><span class="n">3</span><h3 class="s">Заклик</h3><p>Кожне відео закінчується: «Take the 60-second Swan Check. Link in bio.» Водій залишає короткі дані, рекрутер дзвонить.</p></div>
       </div>
     </div>
 
     <div class="stack" style="gap:20px">
       <h2 class="t">Воронка</h2>
       <div class="funnel">
-        <div class="fs"><b>Перегляд</b><span>Reels, TikTok, YouTube Shorts</span></div>
+        <div class="fs"><b>Перегляд</b><span>Reels, TikTok, YouTube</span></div>
         <div class="fs"><b>Swan Check</b><span>коротка форма на 60 секунд</span></div>
         <div class="fs"><b>Дзвінок</b><span>рекрутер Swan телефонує</span></div>
         <div class="fs"><b>Орієнтація</b><span>перший рейс із Swan</span></div>
@@ -279,105 +191,38 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
 
     <div class="stack" style="gap:20px">
       <h2 class="t">Що дивляться водії</h2>
-      <p class="lede">Попит за напрямками: медіана переглядів у топ-40 результатів YouTube за 80 пошуковими запитами (1 963 відео).</p>
+      <p class="lede">Попит за напрямками: медіана переглядів у топ-40 результатів YouTube за 80 пошуковими запитами (1 963 відео, зібрано 26.10.2026).</p>
       <div class="bars" id="bars"></div>
-      <p class="note">Показані напрямки, які беремо в роботу. Вибірка зібрана 26.10.2026.</p>
       <div class="dl">
         <a class="btn" href="files/driver-recruiting-semantic-core.xlsx" download>Семантичне ядро (xlsx)</a>
-        <a class="btn ghost" href="files/swan-content-bank.xlsx" download>Таблиця виробництва (xlsx)</a>
+        <a class="btn ghost" href="files/swan-content-plan.xlsx" download>Таблиця плану (xlsx)</a>
       </div>
     </div>
-
-    <div class="stack" style="gap:20px">
-      <h2 class="t">Правила масштабування</h2>
-      <div class="tbl">
-        <table>
-          <thead><tr><th>Ситуація</th><th>Рішення</th></tr></thead>
-          <tbody>
-            <tr><td>Патерн має 6 і більше публікацій, медіана ≥ 450 переглядів</td><td>Тримаємо, додаємо варіації щотижня</td></tr>
-            <tr><td>Медіана ≥ 1 500 переглядів</td><td>Утроюємо кількість у цьому патерні, робимо довге на цю тему</td></tr>
-            <tr><td>Медіана нижче 226 після 6 публікацій</td><td>Припиняємо патерн</td></tr>
-            <tr><td>Дуель: один варіант має ≥ 1.5× переглядів чи утримання</td><td>Цей варіант стає основним для теми</td></tr>
-            <tr><td>Окремий ролик ≥ 5 000 переглядів</td><td>Ремікс: 5 нових хуків на ту саму тему протягом тижня</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note">Стартова точка Instagram Swan: Reels ≈ 226 переглядів у середньому.</p>
-    </div>
   </div>
 </section>
 
-<!-- ========== TAKE ========== -->
-<section class="tab wrap" id="take" role="tabpanel" aria-labelledby="t-take">
-  <div class="stack">
-    <div class="head">
-      <h2 class="t">Що беремо і що ні</h2>
-      <p class="lede">Дванадцять напрямків із відео, що вже набрали перегляди. Працюємо на досвідчених водіїв CDL-A, тому теми для новачків пропускаємо.</p>
-    </div>
-    <div class="pgrid" id="pgrid"></div>
-  </div>
-</section>
-
-<!-- ========== BANK ========== -->
-<section class="tab wrap" id="bank" role="tabpanel" aria-labelledby="t-bank">
-  <div class="stack" style="gap:28px">
-    <div class="head">
-      <h2 class="t">Банк тем</h2>
-      <p class="lede"><span id="bank-n"></span> тем-шортсів. Усі хуки англійською, як вони прозвучать у відео. Фільтруйте за напрямком чи треком.</p>
-    </div>
-    <div class="ctrl" id="bank-ctrl"></div>
-    <div class="ctrl">
-      <input type="search" id="bank-q" placeholder="Пошук по темах" aria-label="Пошук по темах">
-      <span class="note" id="bank-count"></span>
-    </div>
-    <div class="brk" id="bank-list"></div>
-  </div>
-</section>
-
-<!-- ========== PLAN ========== -->
 <section class="tab wrap" id="plan" role="tabpanel" aria-labelledby="t-plan">
   <div class="stack" style="gap:28px">
     <div class="head">
       <h2 class="t">План на 21 день</h2>
-      <p class="lede">Щодня три шортси. Довге відео виходить у дні 3, 8, 12, 17 і 21.</p>
+      <p class="lede">Кожне відео з назвою англійською (як вона буде в кадрі), українським перекладом і коротким описом. Довгі відео виходять у дні 4, 9, 14 і 19.</p>
     </div>
-    <div class="legend">
-      <span><i style="background:var(--sign)"></i>Motion</span>
-      <span><i style="background:var(--heygen)"></i>HeyGen</span>
-      <span><i style="background:var(--no)"></i>Нарізка, дуель, ремікс</span>
-      <span><i style="background:var(--sign);width:20px;height:6px;border-radius:2px"></i>День довгого відео</span>
-    </div>
-    <div class="stack" id="weeks" style="gap:30px"></div>
+    <div class="ctrl" id="pf"></div>
+    <div class="weeks" id="weeks"></div>
   </div>
 </section>
 
-<!-- ========== LONG ========== -->
-<section class="tab wrap" id="long" role="tabpanel" aria-labelledby="t-long">
+<section class="tab wrap" id="format" role="tabpanel" aria-labelledby="t-format">
   <div class="stack">
     <div class="head">
-      <h2 class="t">Довгі відео</h2>
-      <p class="lede">П'ять повних пояснень для YouTube, кожні 4–5 днів. Це відповіді на запити, які люди вводять у пошук, тому вони приводять нових глядачів і через місяці. З кожного довгого виходять нарізки на наступні дні.</p>
+      <h2 class="t">Два формати</h2>
+      <p class="lede">Один і той самий сценарій робимо в одному з двох форматів.</p>
     </div>
-    <div class="lgrid" id="lgrid"></div>
-  </div>
-</section>
-
-<!-- ========== VARIANTS ========== -->
-<section class="tab wrap" id="variants" role="tabpanel" aria-labelledby="t-variants">
-  <div class="stack">
-    <div class="head">
-      <h2 class="t">Три варіанти виробництва</h2>
-      <p class="lede">Один сценарій можна зробити трьома способами. Різниця в тому, хто «говорить» і скільки в кадрі графіки.</p>
+    <div class="fgrid" id="fgrid"></div>
+    <div class="fall">
+      <h3>Якщо HeyGen не підійде</h3>
+      <p>Тоді всі відео робимо тільки як Motion. Теми, назви й порядок виходу в плані не змінюються: відео, що були з ведучим, отримують ту саму розповідь голосом за кадром.</p>
     </div>
-    <div class="vgrid" id="vgrid"></div>
-    <div class="duel">
-      <div class="stack" style="gap:12px">
-        <h3>Дуелі</h3>
-        <p>У днях 8, 11, 15 і 20 один і той самий сценарій виходить у всіх трьох варіантах в один день. Перегляди й утримання показують, який варіант масштабувати.</p>
-      </div>
-      <div class="dlist" id="dlist"></div>
-    </div>
-    <p class="note">Схеми показують лише компонування кадру. Готові ролики в кожному варіанті зробимо в календарі.</p>
   </div>
 </section>
 </main>
@@ -387,7 +232,7 @@ footer { border-top: 1px solid var(--line); padding-block: 30px; color: var(--di
 </footer>
 
 <script>
-const DATA = {"stats": {"shorts": 63, "longs": 5, "bank": 88, "scheduled": 47, "cuts": 8, "duels": 4, "remix": 4, "ready": 2, "days": 21}, "patterns": [{"id": "A", "name": "День з життя, година за годиною", "proof": "«A Day in the Life of a Truck Driver» (Trucker AK) 6.7M; «A Day In The Life Of A 24 Year OLD Truck Driver» (Alex Nino) 2.5M; «My Day In The Life As a Truck Driver» (Jay The Trucker) 433K. Хук day in the life у нашій таблиці: у 3.1 раза вище медіани, 33% відео ≥100K", "how": "Те саме питання «як це насправді», але без вигаданого особистого досвіду: годинник дня на графіці (Motion) або пояснення рекрутера (HeyGen)", "taken": true, "reason": "", "count": 10}, {"id": "B", "name": "Перший рік, помилки, чого чекати", "proof": "«21 Things Brand New Truck Drivers Can Expect» 1.3M; «Advice for your First Year as a New Truck Driver» (Driven Trucking) 925K; «What to Expect Your First Year» (Smart Trucking) 903K; «5 Common Mistakes New Truck Drivers Make» 404K. Запит new truck driver mistakes: медіана 384K", "how": "Нові списки помилок і очікувань під наші рейси й процес; формат «число + помилка» в одному ролику", "taken": false, "reason": "Теми для новачків. Орієнтуємось на досвідчених водіїв CDL-A, тому перший рік і помилки новачків пропускаємо.", "count": 0}, {"id": "C", "name": "Гроші: оплата, чек, відрахування", "proof": "«Truck Driver Salary: What It's REALLY Like» (Rideshare Guy) 5.6M; «I Used To Make $100K As A Trucker. Now I Make Minimum Wage» 3.6M; «Making $5K My First Week» 1.5M; «I Bring In $144K A Year» (CNBC) 1.4M; «How much I made my First 6 months» 911K. Запит truck driver pay explained: медіана 107K", "how": "Пояснення, куди йдуть гроші, на прикладах із підписом example; жодних обіцянок, цифри Swan тільки після підтвердження", "taken": true, "reason": "", "count": 11}, {"id": "D", "name": "Правда про компанії, red flags, оголошення", "proof": "«The BS Trucking Companies Tell New Truck Drivers» (Driven Trucking) 2.4M; «How the Trucking Industry Got So Terrible» (Wendover) 3.9M; «How Truck Driving Became One Of The Worst Jobs» (Business Insider) 2.6M", "how": "Не критика конкретних компаній, а чек-листи й розбори вигаданих оголошень; ми показуємо, що питати, а відповідь дає наш процес", "taken": true, "reason": "", "count": 11}, {"id": "E", "name": "Конфлікт: диспетчер, quit, detention", "proof": "«Truck Driver Quits After 2 Days Of Local Trucking» (Mutha) 925K; «Truck Drivers Are Quitting Their Jobs» 1.5M; «Trainer & Trainee Argument» (Mutha) 1.25M з 6.1K коментарів; TikTok Trucker Doll, скетчі й звуки 200–570K", "how": "Серія Dispatch Files: типова ситуація в чаті, внизу правильне питання. Біль упізнається за 2 секунди", "taken": true, "reason": "", "count": 12}, {"id": "F", "name": "Home time: OTR, regional, local, dedicated", "proof": "Запит truck driver home time: медіана 82K; «Truck Driver Quits After 2 Days Of Local Trucking» 925K; кластер «Спосіб життя / home time»: медіана 37K", "how": "Карта й календар: скільки ночей удома в кожному типі роботи, як спитати й вимагати письмово", "taken": true, "reason": "", "count": 7}, {"id": "G", "name": "Навчання, CDL, платна школа", "proof": "«Paid CDL school what NO ONE tells you» (Helpful Trucker) 905K; «Get Paid While You Get Your CDL» (Roehl) 6.0M; Pre-Trip Inspection (Driving Academy) 711K; TikTok: DRC «Haters gonna hate» 23.8K, Wilson «No CDL? paid training» 14.3K", "how": "Контракт і питання до школи простими словами; кластер «Новачок / CDL» має найвищу медіану (48K) у таблиці", "taken": false, "reason": "Навчання й школи CDL. Наша аудиторія — досвідчені водії CDL-A, тому навчання пропускаємо.", "count": 0}, {"id": "H", "name": "Техніка, кабіна, тури", "proof": "«Inside Truckers Custom 156\" Sleeper» (Reliable Carriers) 9.1M; Prime TikTok: огляд нового тягача 45.8K, «Coolest truck on the yard» 21.4K; Wilson «New truck. New chapter» 17.4K", "how": "Ілюстрована кабіна (Motion) і справжні кадри Swan, коли клієнт дасть", "taken": true, "reason": "", "count": 6}, {"id": "I", "name": "Життя в дорозі: truck stop, душ, сон, кабіна", "proof": "TikTok @truckerwazeer: CAT scale 5.1M і 4.5M, shower rating 2.7M, reefer 2.4M, air hose 1.8M, скільки пального 1.5M; «My night routine and dinner on the truck» (Master Truck Driver) 32M; «Big Rig Sleeping Is Better Than You Think» (Jalopnik) 8.5M", "how": "Пояснення «як це працює» для людини з боку: душ, сон, їжа, ваги. Не потребує фактів Swan, ідеально для масового охоплення", "taken": true, "reason": "", "count": 12}, {"id": "J", "name": "DOT, правила, inspections", "proof": "Trucking Life with Shawn: «Inside a Real Weigh Station» 466K, «KY weigh stations infrared» 422K; «FULL Level 1 DOT Inspection» (thatDOTcop) 302K; готовий наш HOS-ролик", "how": "Одне правило за 20–30 секунд із джерелом; тут дотик до новинного каналу", "taken": true, "reason": "", "count": 7}, {"id": "K", "name": "Команда, сім'я, тварини", "proof": "«I Took My Wife & Son On A Trucking Adventure» (Alex Nino) 4.7M; Volvo «US couple lives the good life on the road» 1.8M; TikTok @alexnino_: батько й син 32M", "how": "Політика компанії (хто може їхати, умови) і team driving як правила; без вигаданих історій", "taken": true, "reason": "", "count": 5}, {"id": "L", "name": "Рекрутер відповідає водієві", "proof": "TikTok @truckerwazeer: 5 з 10 топових відео це «Reply to @…» (1–5M); @thedrivingdesk «Let me help» 3.6K; Wilson «Meet our recruiting team» 11.1K", "how": "Реальні питання з коментарів і DM, відповідь за 20–30 с. Замінює безглузде «хто я»: рекрутер з'являється через користь", "taken": true, "reason": "", "count": 7}], "bank": [{"id": "A1", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "A 14-hour driving day, hour by hour", "note": "Таймлайн HOS: 11 годин руху, 14-годинне вікно, перерва", "day": 16, "slot": "Motion", "ready": false}, {"id": "A2", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "A team driver's 24 hours", "note": "Два водії, одна кабіна, ротація", "day": 3, "slot": "Flex", "ready": false}, {"id": "A3", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "A local driver's day vs an OTR driver's day", "note": "Спліт-екран", "day": null, "slot": null, "ready": false}, {"id": "A4", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "Monday to Sunday: a week out on the road", "note": "Календар тижня, ночі в рейсі", "day": null, "slot": null, "ready": false}, {"id": "A5", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "What happens at a shipper, step by step", "note": "Двір, ворота, док, чек-ін, пломба", "day": null, "slot": null, "ready": false}, {"id": "A6", "p": "A", "pname": "День з життя, година за годиною", "track": "H", "hook": "Your first morning at orientation, hour by hour", "note": "Потрібні дані Swan про орієнтацію", "day": null, "slot": null, "ready": false}, {"id": "A7", "p": "A", "pname": "День з життя, година за годиною", "track": "H", "hook": "What a trucking recruiter's day really looks like", "note": "Рекрутер розповідає про свій день (правда, без прикрас)", "day": 16, "slot": "HeyGen", "ready": false}, {"id": "A8", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "One load, start to finish: 7 steps", "note": "Від диспетчера до доставки", "day": null, "slot": null, "ready": false}, {"id": "A9", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "Where drivers sleep, shower and eat on a normal day", "note": "Іконки, без фактів Swan", "day": null, "slot": null, "ready": false}, {"id": "A10", "p": "A", "pname": "День з життя, година за годиною", "track": "M", "hook": "A dedicated route day vs an OTR day", "note": "Порівняння двох графіків", "day": null, "slot": null, "ready": false}, {"id": "C1", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "Where a $1,000 load really goes (example)", "note": "Приклад із підписом EXAMPLE", "day": 5, "slot": "Motion", "ready": false}, {"id": "C2", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "Practical miles vs short miles in 20 seconds", "note": "Карта: 1,000 проти 940", "day": 2, "slot": "Motion", "ready": false}, {"id": "C3", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "Per mile or percentage: which pays more when freight is slow?", "note": "Графік по тижнях", "day": null, "slot": null, "ready": false}, {"id": "C5", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "H", "hook": "Your first paycheck: what to expect and when", "note": "Графік виплат Swan", "day": 9, "slot": "HeyGen", "ready": false}, {"id": "C6", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "3 deductions that surprise new drivers", "note": "Escrow, обладнання, паливо (загальні приклади)", "day": 13, "slot": "Motion", "ready": false}, {"id": "C7", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "Detention: after how many hours should you be paid?", "note": "Таймер на екрані", "day": null, "slot": null, "ready": false}, {"id": "C8", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "H", "hook": "The weekly guarantee: what counts and what doesn't", "note": "Політика Swan", "day": 19, "slot": "HeyGen", "ready": false}, {"id": "C9", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "How to check a settlement sheet in 60 seconds", "note": "Червона ручка на листі", "day": null, "slot": null, "ready": false}, {"id": "C10", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "What $0.05 more per mile is worth over a year (math)", "note": "100,000 миль × $0.05 = $5,000, приклад", "day": null, "slot": null, "ready": false}, {"id": "C11", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "H", "hook": "Sign-on bonus: when you actually get it", "note": "Умови бонусу Swan", "day": 13, "slot": "HeyGen", "ready": false}, {"id": "C12", "p": "C", "pname": "Гроші: оплата, чек, відрахування", "track": "M", "hook": "Who pays for fuel, and when?", "note": "Схема, залежно від типу угоди", "day": 9, "slot": "Motion", "ready": false}, {"id": "D0", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Job Ad Autopsy #1: «Home every weekend»", "note": "ГОТОВО в Remotion, змінюємо тільки фінал", "day": 1, "slot": "Motion", "ready": true}, {"id": "D1", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Job Ad Autopsy #2: «Top pay»", "note": "Серія, 10 частин", "day": 6, "slot": "Flex", "ready": false}, {"id": "D2", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Job Ad Autopsy #3: «Brand-new equipment»", "note": "", "day": 12, "slot": "Motion", "ready": false}, {"id": "D3", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Job Ad Autopsy #4: «Sign-on bonus*»", "note": "Зірочка і дрібний шрифт", "day": 18, "slot": "Motion", "ready": false}, {"id": "D4", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Job Ad Autopsy #5: «Home time varies»", "note": "", "day": null, "slot": null, "ready": false}, {"id": "D5", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "5 phrases in a job ad that mean ask more", "note": "Kinetic", "day": null, "slot": null, "ready": false}, {"id": "D6", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "H", "hook": "The question that tells you how a carrier treats drivers", "note": "«How many drivers left in the first 90 days?»", "day": 6, "slot": "HeyGen", "ready": false}, {"id": "D7", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "H", "hook": "5 questions that make a bad recruiter nervous", "note": "Прямий формат, без назви перевізників", "day": 1, "slot": "HeyGen", "ready": false}, {"id": "D8", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Promises vs the contract: 3 things to check in writing", "note": "Спліт-екран PROMISE / REALITY", "day": null, "slot": null, "ready": false}, {"id": "D9", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "H", "hook": "What a good answer from a recruiter sounds like", "note": "Приклади добрих і поганих відповідей", "day": 3, "slot": "HeyGen", "ready": false}, {"id": "D10", "p": "D", "pname": "Правда про компанії, red flags, оголошення", "track": "M", "hook": "Don't sign before you see this document", "note": "Settlement, policy, contract", "day": null, "slot": null, "ready": false}, {"id": "E0", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 01: «home Friday?»", "note": "ГОТОВО в Remotion, змінюємо тільки фінал", "day": 1, "slot": "Flex", "ready": true}, {"id": "E1", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 02: «the load changed again»", "note": "Чат", "day": 4, "slot": "Motion", "ready": false}, {"id": "E2", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 03: «waiting 5 hours at the dock»", "note": "Detention", "day": 10, "slot": "Motion", "ready": false}, {"id": "E3", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 04: «where's my layover pay?»", "note": "Layover", "day": 15, "slot": "Motion", "ready": false}, {"id": "E4", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 05: «just push through your hours»", "note": "HOS, зв'язок із новинним каналом", "day": 21, "slot": "Motion", "ready": false}, {"id": "E5", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 06: «your trainer vs you»", "note": "", "day": null, "slot": null, "ready": false}, {"id": "E6", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 07: «the truck broke down, who pays?»", "note": "Breakdown pay", "day": null, "slot": null, "ready": false}, {"id": "E7", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 08: «we'll cover it at orientation»", "note": "", "day": null, "slot": null, "ready": false}, {"id": "E8", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Dispatch Files EP 09: «third weekend in a row»", "note": "Продовження EP 01", "day": null, "slot": null, "ready": false}, {"id": "E9", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "H", "hook": "Why drivers quit in the first 90 days: 5 reasons", "note": "Рекрутер, без вигаданих історій", "day": 5, "slot": "HeyGen", "ready": false}, {"id": "E10", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "H", "hook": "Thinking about quitting? Try these 3 things first", "note": "Корисна порада, без тиску", "day": 15, "slot": "HeyGen", "ready": false}, {"id": "E11", "p": "E", "pname": "Конфлікт: диспетчер, quit, detention", "track": "M", "hook": "Home time promised vs kept: how to check", "note": "Календар і журнал", "day": null, "slot": null, "ready": false}, {"id": "F1", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "M", "hook": "OTR vs Regional vs Local in 30 seconds", "note": "Карта", "day": 8, "slot": "Motion", "ready": false}, {"id": "F2", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "M", "hook": "What «home weekly» means in writing", "note": "Календар на 4 тижні", "day": null, "slot": null, "ready": false}, {"id": "F3", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "M", "hook": "Dedicated: what it is and who it fits", "note": "Схема лейну", "day": null, "slot": null, "ready": false}, {"id": "F4", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "M", "hook": "Nights at home per month: three job types", "note": "Лічильник", "day": null, "slot": null, "ready": false}, {"id": "F5", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "H", "hook": "Home time questions and the answers to listen for", "note": "", "day": 8, "slot": "HeyGen", "ready": false}, {"id": "F6", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "H", "hook": "Can you choose your lanes?", "note": "Відповідь Swan", "day": 12, "slot": "HeyGen", "ready": false}, {"id": "F7", "p": "F", "pname": "Home time: OTR, regional, local, dedicated", "track": "H", "hook": "Planning your time at home as a driver", "note": "Практичні поради", "day": 4, "slot": "HeyGen", "ready": false}, {"id": "H1", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "Inside a sleeper cab: what's in it", "note": "Ілюстрована кабіна, анімація", "day": null, "slot": null, "ready": false}, {"id": "H2", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "Walkaround: the truck you'll drive", "note": "Кадри Swan, тільки після їх зйомки", "day": null, "slot": null, "ready": false}, {"id": "H3", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "5 things to check on a truck before you roll", "note": "Чекліст", "day": 17, "slot": "Motion", "ready": false}, {"id": "H4", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "APU, inverter, fridge: what each one does", "note": "Іконки", "day": null, "slot": null, "ready": false}, {"id": "H5", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "What a speed limiter means for your miles", "note": "Графік", "day": null, "slot": null, "ready": false}, {"id": "H6", "p": "H", "pname": "Техніка, кабіна, тури", "track": "M", "hook": "Set up your cab: what's worth bringing", "note": "Чекліст", "day": 7, "slot": "Motion", "ready": false}, {"id": "I1", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "CAT scale: how not to be overweight", "note": "Схема осей", "day": 3, "slot": "Motion", "ready": false}, {"id": "I2", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "How much fuel does a semi hold? What a fill-up costs", "note": "Приклад із підписом", "day": 11, "slot": "Motion", "ready": false}, {"id": "I3", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "How truck drivers shower on the road", "note": "Покроково", "day": 6, "slot": "Motion", "ready": false}, {"id": "I4", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "What is a reefer trailer?", "note": "Пояснення", "day": null, "slot": null, "ready": false}, {"id": "I5", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "What happens when an air hose blows?", "note": "Схема гальм", "day": null, "slot": null, "ready": false}, {"id": "I6", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "How drivers sleep in a sleeper cab", "note": "Схема ліжка", "day": null, "slot": null, "ready": false}, {"id": "I7", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "H", "hook": "Truck stop rules nobody explains", "note": "", "day": 2, "slot": "HeyGen", "ready": false}, {"id": "I8", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "5 easy meals you can make in a cab", "note": "Рецепти без фактів Swan", "day": null, "slot": null, "ready": false}, {"id": "I9", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "Winter: 7 things to keep in your cab", "note": "", "day": null, "slot": null, "ready": false}, {"id": "I10", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "Where to park when the truck stop is full", "note": "", "day": null, "slot": null, "ready": false}, {"id": "I11", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "Backing up: the one rule that helps", "note": "Схема руху причепа", "day": 19, "slot": "Motion", "ready": false}, {"id": "I12", "p": "I", "pname": "Життя в дорозі: truck stop, душ, сон, кабіна", "track": "M", "hook": "Manual or automatic: what most carriers run", "note": "", "day": null, "slot": null, "ready": false}, {"id": "J1", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "What a DOT officer checks first", "note": "Схема огляду", "day": 14, "slot": "Motion", "ready": false}, {"id": "J2", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "Level 1 inspection: the three phases", "note": "", "day": 20, "slot": "Motion", "ready": false}, {"id": "J3", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "Hours of Service in 30 seconds", "note": "ГОТОВО в Remotion (hos-explained)", "day": 2, "slot": "Flex", "ready": false}, {"id": "J4", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "34-hour restart in 20 seconds", "note": "", "day": 7, "slot": "Flex", "ready": false}, {"id": "J5", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "The 30-minute break rule", "note": "", "day": null, "slot": null, "ready": false}, {"id": "J6", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "What your ELD actually records", "note": "", "day": null, "slot": null, "ready": false}, {"id": "J7", "p": "J", "pname": "DOT, правила, inspections", "track": "M", "hook": "What to do at a weigh station", "note": "", "day": null, "slot": null, "ready": false}, {"id": "K1", "p": "K", "pname": "Команда, сім'я, тварини", "track": "M", "hook": "Team driving: how 11 + 11 hours works", "note": "Графік", "day": null, "slot": null, "ready": false}, {"id": "K2", "p": "K", "pname": "Команда, сім'я, тварини", "track": "M", "hook": "How team pay is usually split: two common ways", "note": "Схема", "day": null, "slot": null, "ready": false}, {"id": "K3", "p": "K", "pname": "Команда, сім'я, тварини", "track": "H", "hook": "Pets on the truck: ask this first", "note": "Політика Swan", "day": 17, "slot": "HeyGen", "ready": false}, {"id": "K4", "p": "K", "pname": "Команда, сім'я, тварини", "track": "H", "hook": "Can family ride along? What to ask", "note": "Політика Swan", "day": 20, "slot": "HeyGen", "ready": false}, {"id": "K5", "p": "K", "pname": "Команда, сім'я, тварини", "track": "H", "hook": "Staying close to family from the road: 5 habits", "note": "", "day": 10, "slot": "HeyGen", "ready": false}, {"id": "L1", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «is the pay really up to that?»", "note": "Тільки з підтвердженими умовами", "day": null, "slot": null, "ready": false}, {"id": "L2", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «do I need experience?»", "note": "Вимоги Swan", "day": 11, "slot": "HeyGen", "ready": false}, {"id": "L3", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «how fast do I get paid?»", "note": "Виплати Swan", "day": 18, "slot": "HeyGen", "ready": false}, {"id": "L4", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «can I pick my lanes?»", "note": "Лейни Swan", "day": null, "slot": null, "ready": false}, {"id": "L5", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «what's orientation like?»", "note": "Орієнтація Swan", "day": 21, "slot": "HeyGen", "ready": false}, {"id": "L6", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Reply to @driver: «what if I want to leave?»", "note": "Політика Swan", "day": 14, "slot": "HeyGen", "ready": false}, {"id": "L7", "p": "L", "pname": "Рекрутер відповідає водієві", "track": "H", "hook": "Recruiter reads your job ad: 3 flags", "note": "Дозвіл від автора допису", "day": 7, "slot": "HeyGen", "ready": false}], "cal": [{"day": 1, "slots": [{"kind": "topic", "id": "D0", "text": "Job Ad Autopsy #1: «Home every weekend»", "track": "M", "ready": true}, {"kind": "topic", "id": "D7", "text": "5 questions that make a bad recruiter nervous", "track": "H", "ready": false}, {"kind": "topic", "id": "E0", "text": "Dispatch Files EP 01: «home Friday?»", "track": "M", "ready": true}], "long": null}, {"day": 2, "slots": [{"kind": "topic", "id": "C2", "text": "Practical miles vs short miles in 20 seconds", "track": "M", "ready": false}, {"kind": "topic", "id": "I7", "text": "Truck stop rules nobody explains", "track": "H", "ready": false}, {"kind": "topic", "id": "J3", "text": "Hours of Service in 30 seconds", "track": "M", "ready": false}], "long": null}, {"day": 3, "slots": [{"kind": "topic", "id": "I1", "text": "CAT scale: how not to be overweight", "track": "M", "ready": false}, {"kind": "topic", "id": "D9", "text": "What a good answer from a recruiter sounds like", "track": "H", "ready": false}, {"kind": "topic", "id": "A2", "text": "A team driver's 24 hours", "track": "M", "ready": false}], "long": {"id": "L1", "title": "How Truck Drivers Get Paid: Per Mile, Percentage, Hourly (2026)"}}, {"day": 4, "slots": [{"kind": "topic", "id": "E1", "text": "Dispatch Files EP 02: «the load changed again»", "track": "M", "ready": false}, {"kind": "topic", "id": "F7", "text": "Planning your time at home as a driver", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L1: practical vs short miles", "track": "X"}], "long": null}, {"day": 5, "slots": [{"kind": "topic", "id": "C1", "text": "Where a $1,000 load really goes (example)", "track": "M", "ready": false}, {"kind": "topic", "id": "E9", "text": "Why drivers quit in the first 90 days: 5 reasons", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L1: deductions on a settlement", "track": "X"}], "long": null}, {"day": 6, "slots": [{"kind": "topic", "id": "I3", "text": "How truck drivers shower on the road", "track": "M", "ready": false}, {"kind": "topic", "id": "D6", "text": "The question that tells you how a carrier treats drivers", "track": "H", "ready": false}, {"kind": "topic", "id": "D1", "text": "Job Ad Autopsy #2: «Top pay»", "track": "M", "ready": false}], "long": null}, {"day": 7, "slots": [{"kind": "topic", "id": "H6", "text": "Set up your cab: what's worth bringing", "track": "M", "ready": false}, {"kind": "topic", "id": "L7", "text": "Recruiter reads your job ad: 3 flags", "track": "H", "ready": false}, {"kind": "topic", "id": "J4", "text": "34-hour restart in 20 seconds", "track": "M", "ready": false}], "long": null}, {"day": 8, "slots": [{"kind": "topic", "id": "F1", "text": "OTR vs Regional vs Local in 30 seconds", "track": "M", "ready": false}, {"kind": "topic", "id": "F5", "text": "Home time questions and the answers to listen for", "track": "H", "ready": false}, {"kind": "duel", "id": "C3", "text": "Per mile or percentage: which pays more when freight is slow?", "track": "D"}], "long": {"id": "L2", "title": "How to Switch Trucking Companies Without Losing Money"}}, {"day": 9, "slots": [{"kind": "topic", "id": "C12", "text": "Who pays for fuel, and when?", "track": "M", "ready": false}, {"kind": "topic", "id": "C5", "text": "Your first paycheck: what to expect and when", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L2: what to check before you leave a carrier", "track": "X"}], "long": null}, {"day": 10, "slots": [{"kind": "topic", "id": "E2", "text": "Dispatch Files EP 03: «waiting 5 hours at the dock»", "track": "M", "ready": false}, {"kind": "topic", "id": "K5", "text": "Staying close to family from the road: 5 habits", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L2: what you can lose when you switch", "track": "X"}], "long": null}, {"day": 11, "slots": [{"kind": "topic", "id": "I2", "text": "How much fuel does a semi hold? What a fill-up costs", "track": "M", "ready": false}, {"kind": "topic", "id": "L2", "text": "Reply to @driver: «do I need experience?»", "track": "H", "ready": false}, {"kind": "duel", "id": "I4", "text": "What is a reefer trailer?", "track": "D"}], "long": null}, {"day": 12, "slots": [{"kind": "topic", "id": "D2", "text": "Job Ad Autopsy #3: «Brand-new equipment»", "track": "M", "ready": false}, {"kind": "topic", "id": "F6", "text": "Can you choose your lanes?", "track": "H", "ready": false}, {"kind": "remix", "text": "Ремікс переможця: 3 нові варіації найкращого патерну тижня", "track": "R"}], "long": {"id": "L3", "title": "Truck Driver Home Time: What «Home Weekly» Really Means"}}, {"day": 13, "slots": [{"kind": "topic", "id": "C6", "text": "3 deductions that surprise new drivers", "track": "M", "ready": false}, {"kind": "topic", "id": "C11", "text": "Sign-on bonus: when you actually get it", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L3: what «home weekly» means", "track": "X"}], "long": null}, {"day": 14, "slots": [{"kind": "topic", "id": "J1", "text": "What a DOT officer checks first", "track": "M", "ready": false}, {"kind": "topic", "id": "L6", "text": "Reply to @driver: «what if I want to leave?»", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L3: OTR vs regional vs local", "track": "X"}], "long": null}, {"day": 15, "slots": [{"kind": "topic", "id": "E3", "text": "Dispatch Files EP 04: «where's my layover pay?»", "track": "M", "ready": false}, {"kind": "topic", "id": "E10", "text": "Thinking about quitting? Try these 3 things first", "track": "H", "ready": false}, {"kind": "duel", "id": "A3", "text": "A local driver's day vs an OTR driver's day", "track": "D"}], "long": null}, {"day": 16, "slots": [{"kind": "topic", "id": "A1", "text": "A 14-hour driving day, hour by hour", "track": "M", "ready": false}, {"kind": "topic", "id": "A7", "text": "What a trucking recruiter's day really looks like", "track": "H", "ready": false}, {"kind": "remix", "text": "Ремікс переможця: 3 нові варіації найкращого патерну тижня", "track": "R"}], "long": null}, {"day": 17, "slots": [{"kind": "topic", "id": "H3", "text": "5 things to check on a truck before you roll", "track": "M", "ready": false}, {"kind": "topic", "id": "K3", "text": "Pets on the truck: ask this first", "track": "H", "ready": false}, {"kind": "remix", "text": "Ремікс переможця: 3 нові варіації найкращого патерну тижня", "track": "R"}], "long": {"id": "L4", "title": "How Truckers Live in the Cab: Sleeping, Showering, Eating (What It's Really Like)"}}, {"day": 18, "slots": [{"kind": "topic", "id": "D3", "text": "Job Ad Autopsy #4: «Sign-on bonus*»", "track": "M", "ready": false}, {"kind": "topic", "id": "L3", "text": "Reply to @driver: «how fast do I get paid?»", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L4: sleeping in a sleeper", "track": "X"}], "long": null}, {"day": 19, "slots": [{"kind": "topic", "id": "I11", "text": "Backing up: the one rule that helps", "track": "M", "ready": false}, {"kind": "topic", "id": "C8", "text": "The weekly guarantee: what counts and what doesn't", "track": "H", "ready": false}, {"kind": "cut", "text": "Нарізка з L4: showering and eating on the road", "track": "X"}], "long": null}, {"day": 20, "slots": [{"kind": "topic", "id": "J2", "text": "Level 1 inspection: the three phases", "track": "M", "ready": false}, {"kind": "topic", "id": "K4", "text": "Can family ride along? What to ask", "track": "H", "ready": false}, {"kind": "duel", "id": "D8", "text": "Promises vs the contract: 3 things to check in writing", "track": "D"}], "long": null}, {"day": 21, "slots": [{"kind": "topic", "id": "E4", "text": "Dispatch Files EP 05: «just push through your hours»", "track": "M", "ready": false}, {"kind": "topic", "id": "L5", "text": "Reply to @driver: «what's orientation like?»", "track": "H", "ready": false}, {"kind": "remix", "text": "Ремікс переможця: 3 нові варіації найкращого патерну тижня", "track": "R"}], "long": {"id": "L5", "title": "DOT Inspection Level 1: What Officers Check and How to Pass"}}], "longs": [{"day": 3, "id": "L1", "title": "How Truck Drivers Get Paid: Per Mile, Percentage, Hourly (2026)", "kw": "how truck drivers get paid · truck driver pay explained", "proof": "Медіана топ-40: 93K і 107K. Теми-доказ: Rideshare Guy 5.6M, More Perfect Union 3.6M", "struct": ["Центи за милю (practical / short)", "відсоток", "погодинна", "гарантія", "detention / layover / stop", "відрахування", "settlement", "що питати"], "cuts": "C2, C6, C9, C10"}, {"day": 8, "id": "L2", "title": "How to Switch Trucking Companies Without Losing Money", "kw": "how to switch trucking companies · quitting a trucking company", "proof": "Запит how to switch trucking companies: медіана топ-40 21K. Доказ: Mutha «Truck Driver Quits After 2 Days Of Local Trucking» 925K; «Truck Drivers Are Quitting Their Jobs» 1.5M", "struct": ["Коли йти", "що перевірити в контракті й settlement", "escrow й утримання", "лізинг техніки", "пауза між роботами", "як не втратити виплати", "що вимагати від нового перевізника"], "cuts": "D6, E9, E10"}, {"day": 12, "id": "L3", "title": "Truck Driver Home Time: What «Home Weekly» Really Means", "kw": "truck driver home time · OTR vs regional vs local", "proof": "Медіана топ-40: 82K. Доказ: Mutha 925K (local trucking)", "struct": ["Що значить «home weekly»", "OTR", "regional", "local", "dedicated", "як спитати", "що вимагати письмово"], "cuts": "F1, F2, F4"}, {"day": 17, "id": "L4", "title": "How Truckers Live in the Cab: Sleeping, Showering, Eating (What It's Really Like)", "kw": "how do truck drivers shower · truck driver life on the road", "proof": "Доказ: Master Truck Driver 32M, Jalopnik 8.5M, Wazeer shower rating 2.7M. Запит truck driver life on the road: медіана 5.6M", "struct": ["Сон і ліжко", "душ", "їжа", "туалет", "паркування", "прання", "зв'язок із родиною", "що брати"], "cuts": "I3, I6, A9, I8"}, {"day": 21, "id": "L5", "title": "DOT Inspection Level 1: What Officers Check and How to Pass", "kw": "dot inspection level 1 · what does a dot officer check", "proof": "Доказ: Trucking Life with Shawn «Inside a Real Weigh Station» 466K; thatDOTcop «FULL Level 1 DOT Inspection» 302K; Driving Academy «Pre-Trip Inspection» 711K", "struct": ["Три фази огляду", "документи", "ELD і HOS", "стан тягача", "що веде до out-of-service", "як себе вести", "після огляду"], "cuts": "J1, J2, J7"}], "variants": [{"id": "motion", "name": "Motion", "tag": "Варіант 1", "what": "Ілюстрована графіка без людини: чат із диспетчером, розбір оголошення червоною ручкою, екран ELD, карта маршруту, великий текст.", "good": "Швидко, однаковий стиль, читається без звуку. Масштабується: один шаблон дає десятки роликів.", "use": "Слот 1 щодня: 21 ролик + частина нарізок і ремікси.", "line": "Hours of service in 30 seconds"}, {"id": "hybrid", "name": "Motion + HeyGen", "tag": "Варіант 2", "what": "Ведучий HeyGen відкриває й закриває ролик (3–5 секунд), усередині motion-графіка з цифрами й схемами.", "good": "Обличчя на старті тримає увагу, графіка пояснює. Один сценарій читається і з звуком, і без.", "use": "Слот 3: дуелі, ремікси переможців, нарізки з довгих.", "line": "Practical miles vs short miles"}, {"id": "heygen", "name": "HeyGen", "tag": "Варіант 3", "what": "Аватар-ведучий на весь ролик, поверх нього субтитри й картки з графікою. Формат відповідей на питання водіїв.", "good": "Голос і обличчя без зйомок, швидко робиться багато. Формат «Reply to @driver» у TikTok дає найбільші перегляди в ніші.", "use": "Слот 2 щодня: 21 ролик.", "line": "Reply to @driver"}], "clusters": [{"name": "Новачок / CDL / навчання", "median": 48120, "share100": 0.431}, {"name": "Спосіб життя / home time", "median": 37316, "share100": 0.37}, {"name": "Новини / правила", "median": 22766, "share100": 0.142}, {"name": "Owner-operator / бізнес", "median": 21684, "share100": 0.178}, {"name": "Пошук роботи / вакансії", "median": 11248, "share100": 0.141}, {"name": "Вибір/зміна перевізника", "median": 11166, "share100": 0.115}, {"name": "Гроші / оплата", "median": 6758, "share100": 0.185}, {"name": "Recruiter / рекрутинг (B2B+B2C)", "median": 6154, "share100": 0.093}], "queries": [{"cluster": "Новачок / CDL / навчання", "q": "day in the life new truck driver", "median": 433445, "share100": 0.769}, {"cluster": "Новачок / CDL / навчання", "q": "new truck driver mistakes", "median": 383842, "share100": 0.714}, {"cluster": "Спосіб життя / home time", "q": "female truck driver", "median": 334829, "share100": 0.725}, {"cluster": "Спосіб життя / home time", "q": "truck driver life on the road", "median": 308698, "share100": 0.692}, {"cluster": "Спосіб життя / home time", "q": "day in the life truck driver", "median": 295623, "share100": 0.55}, {"cluster": "Новачок / CDL / навчання", "q": "CDL permit test", "median": 179630, "share100": 0.9}, {"cluster": "Гроші / оплата", "q": "truck driver pay explained", "median": 107431, "share100": 0.514}, {"cluster": "Гроші / оплата", "q": "how truck drivers get paid", "median": 92682, "share100": 0.472}, {"cluster": "Новачок / CDL / навчання", "q": "truck driver training program", "median": 85462, "share100": 0.5}, {"cluster": "Спосіб життя / home time", "q": "truck driver quitting", "median": 82829, "share100": 0.462}, {"cluster": "Спосіб життя / home time", "q": "truck driver home time", "median": 81992, "share100": 0.444}, {"cluster": "Новачок / CDL / навчання", "q": "CDL road test tips", "median": 78749, "share100": 0.455}, {"cluster": "Новини / правила", "q": "truck driver news", "median": 63544, "share100": 0.325}, {"cluster": "Новини / правила", "q": "truck driver regulations 2026", "median": 62039, "share100": 0.353}]};
+const DATA = {"stats": {"total": 25, "shorts": 21, "longs": 4, "h_shorts": 8, "m_shorts": 13}, "videos": [{"day": 1, "kind": "short", "variant": "M", "en": "“Home every weekend”: what's really behind it", "ua": "«Home every weekend»: що за цим стоїть", "desc": "Розбираємо вигадане оголошення про роботу. Чому фраза «додому щовихідних» нічого не гарантує і яке одне питання треба поставити перевізнику."}, {"day": 2, "kind": "short", "variant": "H", "en": "5 questions that make a bad recruiter nervous", "ua": "5 питань, від яких поганий рекрутер нервує", "desc": "П'ять прямих питань перед підписанням: скільки водіїв пішло, зразок settlement, practical чи short милі, простій, home time письмово. Добрий рекрутер відповість на всі."}, {"day": 3, "kind": "short", "variant": "M", "en": "Practical miles vs short miles in 20 seconds", "ua": "Practical і short милі за 20 секунд", "desc": "На карті: водій проїхав 1 000 миль, а заплатили за 940. Показуємо різницю й дві фрази, які треба спитати."}, {"day": 4, "kind": "long", "variant": "H", "en": "How Truck Drivers Get Paid: Per Mile, Percentage, Hourly (2026)", "ua": "Як платять водіям вантажівок: за милю, відсоток, погодинно (2026)", "desc": "Усі моделі оплати: за милю (practical і short милі), відсоток від вантажу, погодинна й тижнева гарантія. Доплати за простій і відрахування, що питати перевізника.", "chapters": ["Центи за милю", "Відсоток", "Погодинна", "Гарантія", "Detention, layover, stop pay", "Відрахування", "Settlement"], "kw": "how truck drivers get paid · truck driver pay explained"}, {"day": 4, "kind": "short", "variant": "M", "en": "CAT scale: how not to be overweight", "ua": "CAT scale: як не отримати перевантаження", "desc": "Схема осей і розподілу вантажу. Що робити, якщо вага на осях не сходиться."}, {"day": 5, "kind": "short", "variant": "H", "en": "Reply to @driver: how fast do I get paid?", "ua": "Відповідь водієві: як швидко мені заплатять?", "desc": "Ведучий відповідає на питання з коментарів: як працює графік виплат і що завжди просити в письмовому вигляді."}, {"day": 6, "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 1: “Still good for home Friday?”", "ua": "Dispatch Files, серія 1: «Ще в силі, що додому в п'ятницю?»", "desc": "Чат із диспетчером: дім знову переносять. Типовий розвиток розмови й правильне питання про графік."}, {"day": 7, "kind": "short", "variant": "M", "en": "How truck drivers shower on the road", "ua": "Як водії-далекобійники миються в дорозі", "desc": "Покроково: truck stop, талон на душ, правила. Популярна тема про побут у рейсі."}, {"day": 8, "kind": "short", "variant": "H", "en": "Home time: the answers to listen for", "ua": "Home time: на що звертати увагу у відповідях", "desc": "Ведучий розбирає три типові відповіді про home time: що звучить конкретно, а що розмито."}, {"day": 9, "kind": "long", "variant": "H", "en": "How to Switch Trucking Companies Without Losing Money", "ua": "Як змінити перевізника й не втратити гроші", "desc": "Коли йти, що перевірити в контракті й settlement, escrow та утримання, лізинг техніки, пауза між роботами. Що вимагати від нового перевізника.", "chapters": ["Коли йти", "Контракт і settlement", "Escrow", "Лізинг техніки", "Пауза між роботами", "Що питати"], "kw": "how to switch trucking companies"}, {"day": 9, "kind": "short", "variant": "M", "en": "Where a $1,000 load really goes (example)", "ua": "Куди насправді йде вантаж на $1,000 (приклад)", "desc": "Схема від вантажу до чека водія. Усі цифри підписані як приклад."}, {"day": 10, "kind": "short", "variant": "M", "en": "OTR vs Regional vs Local in 30 seconds", "ua": "OTR, Regional і Local за 30 секунд", "desc": "Карта й лічильник ночей: скільки днів удома в кожному типі роботи."}, {"day": 11, "kind": "short", "variant": "H", "en": "Why drivers leave their carrier: 5 reasons", "ua": "Чому водії залишають перевізника: 5 причин", "desc": "П'ять причин, які називають водії: графік, гроші, диспетчер, техніка, ставлення. Короткий розбір без вигаданих історій."}, {"day": 12, "kind": "short", "variant": "M", "en": "How much fuel does a semi hold? What a fill-up costs (example)", "ua": "Скільки пального вміщує тягач і скільки коштує заправка (приклад)", "desc": "Об'єм баків, ціна повної заправки на прикладі й чому паливо так впливає на оплату."}, {"day": 13, "kind": "short", "variant": "M", "en": "Detention: after how many hours should you be paid?", "ua": "Detention: через скільки годин очікування мають платити?", "desc": "Таймер на екрані: що таке вільний час на складі й що фіксувати, щоб отримати оплату."}, {"day": 14, "kind": "long", "variant": "H", "en": "Truck Driver Home Time: What “Home Weekly” Really Means", "ua": "Home time водія: що насправді означає «home weekly»", "desc": "OTR, regional, local і dedicated: скільки ночей удома в кожному, як про це питати й що вимагати письмово.", "chapters": ["Що значить home weekly", "OTR", "Regional", "Local", "Dedicated", "Що вимагати письмово"], "kw": "truck driver home time · OTR vs regional vs local"}, {"day": 14, "kind": "short", "variant": "H", "en": "Reply to @driver: can I pick my lanes?", "ua": "Відповідь водієві: чи можна обирати маршрути?", "desc": "Ведучий пояснює, як працює вибір лейнів і як про це питати перевізника."}, {"day": 15, "kind": "short", "variant": "M", "en": "What a DOT officer checks first", "ua": "Що перевіряє офіцер DOT насамперед", "desc": "Схема огляду: документи, ELD, стан тягача. Три речі, на які дивляться першими."}, {"day": 16, "kind": "short", "variant": "M", "en": "Job Ad Autopsy #2: “Brand-new equipment”", "ua": "Розбір оголошення №2: «Brand-new equipment»", "desc": "Вигадане оголошення: що означає «нова техніка» і що спитати про вік тягачів і обладнання."}, {"day": 17, "kind": "short", "variant": "H", "en": "Thinking about leaving your carrier? Try these 3 things first", "ua": "Думаєте піти від перевізника? Спробуйте спершу 3 речі", "desc": "Три практичні кроки перед рішенням: поговорити з диспетчером, зафіксувати проблему письмово, порівняти умови."}, {"day": 18, "kind": "short", "variant": "M", "en": "Inside a sleeper cab: what's in it", "ua": "Усередині кабіни зі спальним місцем: що там є", "desc": "Ілюстрована кабіна з підписами: ліжко, холодильник, інвертор, зберігання. Для тих, хто хоче уявити побут у рейсі."}, {"day": 19, "kind": "long", "variant": "H", "en": "How Truckers Live in the Cab: Sleeping, Showering, Eating", "ua": "Як водії живуть у кабіні: сон, душ, їжа", "desc": "Повний огляд побуту в рейсі: ліжко, душ, їжа, паркування, прання й зв'язок із родиною.", "chapters": ["Сон", "Душ", "Їжа", "Паркування", "Прання", "Сім'я"], "kw": "how do truck drivers shower · life on the road"}, {"day": 19, "kind": "short", "variant": "H", "en": "Staying close to family from the road: 5 habits", "ua": "Як тримати зв'язок із сім'єю з дороги: 5 звичок", "desc": "П'ять простих звичок, що допомагають бути поруч, коли ви в рейсі."}, {"day": 20, "kind": "short", "variant": "M", "en": "Dispatch Files, ep. 2: “Just push through your hours”", "ua": "Dispatch Files, серія 2: «Просто доїдь за годинами»", "desc": "Чат із диспетчером про тиск вийти за ліміти HOS і як відповісти, не псуючи стосунки."}, {"day": 21, "kind": "short", "variant": "H", "en": "What a trucking recruiter's day really looks like", "ua": "Яким насправді буває день рекрутера в тракінгу", "desc": "Рекрутер розповідає про свій день: дзвінки, питання водіїв, що вирішується швидко, а що ні. Без прикрас."}], "clusters": [{"name": "Спосіб життя / home time", "median": 37316}, {"name": "Новини / правила", "median": 22766}, {"name": "Owner-operator / бізнес", "median": 21684}, {"name": "Пошук роботи / вакансії", "median": 11248}, {"name": "Вибір/зміна перевізника", "median": 11166}, {"name": "Гроші / оплата", "median": 6758}, {"name": "Recruiter / рекрутинг (B2B+B2C)", "median": 6154}]};
 </script>
 <script>
 (function () {
@@ -395,13 +240,12 @@ const DATA = {"stats": {"shorts": 63, "longs": 5, "bank": 88, "scheduled": 47, "
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[c]; }); };
 
-  /* ---- tabs ---- */
-  var names = ["overview", "take", "bank", "plan", "long", "variants"];
+  var names = ["overview", "plan", "format"];
   function show(name) {
     if (names.indexOf(name) < 0) name = "overview";
     names.forEach(function (n) {
       $(n).classList.toggle("on", n === name);
-      $("t-" + (n === "variants" ? "variants" : n)).setAttribute("aria-selected", String(n === name));
+      $("t-" + n).setAttribute("aria-selected", String(n === name));
     });
     window.scrollTo(0, 0);
     try { history.replaceState(null, "", "#" + name); } catch (e) {}
@@ -409,112 +253,67 @@ const DATA = {"stats": {"shorts": 63, "longs": 5, "bank": 88, "scheduled": 47, "
   document.querySelectorAll(".tabs button").forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.tab); }); });
   show(location.hash.replace("#", "") || "overview");
 
-  /* ---- overview ---- */
+  /* overview */
+  $("h-total").textContent = S.total;
   $("h-shorts").textContent = S.shorts;
   $("h-longs").textContent = S.longs;
-  $("tiles").innerHTML = [[S.shorts, "шортсів за 21 день"], [S.longs, "довгих відео"], [S.bank, "тем у банку"], [3, "варіанти виробництва"]].map(function (t) { return '<div class="tile"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>'; }).join("");
-  $("flexp").textContent = "Нарізки з довгих (" + S.cuts + "), дуелі (" + S.duels + "), ремікси переможців (" + S.remix + ") і готові шаблони.";
-  var cl = D.clusters.filter(function (c) { return c.name.indexOf("Новачок") < 0; });
-  var mx = Math.max.apply(null, cl.map(function (c) { return c.median; }));
-  $("bars").innerHTML = cl.map(function (c) {
-    var nm = c.name.replace(" (B2B+B2C)", "");
-    return '<div class="brow"><span>' + esc(nm) + '</span><div class="tr"><i style="width:' + Math.round(c.median / mx * 100) + '%"></i></div><b>' + Math.round(c.median / 1000) + 'K</b></div>';
+  $("tiles").innerHTML = [[S.total, "відео за 21 день"], [S.shorts, "шортсів, по одному щодня"], [S.longs, "довгі відео"], [2, "формати виробництва"]].map(function (t) { return '<div class="tile"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>'; }).join("");
+  var mx = Math.max.apply(null, D.clusters.map(function (c) { return c.median; }));
+  $("bars").innerHTML = D.clusters.map(function (c) {
+    return '<div class="brow"><span>' + esc(c.name.replace(" (B2B+B2C)", "")) + '</span><div class="tr"><i style="width:' + Math.round(c.median / mx * 100) + '%"></i></div><b>' + Math.round(c.median / 1000) + 'K</b></div>';
   }).join("");
 
-  /* ---- patterns ---- */
-  $("pgrid").innerHTML = D.patterns.slice().sort(function (a, b) { return (b.taken ? 1 : 0) - (a.taken ? 1 : 0); }).map(function (p) {
-    if (!p.taken) {
-      return '<article class="pc no"><header><h3>' + esc(p.name) + '</h3><span class="mark">Не беремо</span></header><p>' + esc(p.reason) + '</p></article>';
-    }
-    return '<article class="pc"><header><h3>' + esc(p.name) + '</h3><span class="mark">Беремо</span></header>' +
-      '<dl><dt>Доказ</dt><dd>' + esc(p.proof) + '</dd><dt>Робимо</dt><dd>' + esc(p.how) + '</dd><dt>Тем</dt><dd><span class="cnt">' + p.count + '</span></dd></dl></article>';
-  }).join("");
-
-  /* ---- bank ---- */
-  var state = {p: "all", t: "all", q: ""};
-  var takenP = D.patterns.filter(function (p) { return p.taken; });
-  $("bank-n").textContent = D.bank.length;
+  /* plan */
+  var f = "all";
+  var FL = [["all", "Усі"], ["short", "Шортси"], ["long", "Довгі"], ["H", "Motion + HeyGen"], ["M", "Motion"]];
   function chips() {
-    var h = '<button class="chip" data-p="all" aria-pressed="' + (state.p === "all") + '">Усі напрямки</button>';
-    takenP.forEach(function (p) { h += '<button class="chip" data-p="' + p.id + '" aria-pressed="' + (state.p === p.id) + '">' + esc(p.name.split(",")[0]) + '</button>'; });
-    h += '<span style="flex-basis:100%;height:0"></span>';
-    h += '<button class="chip" data-t="all" aria-pressed="' + (state.t === "all") + '">Усі треки</button>';
-    h += '<button class="chip" data-t="M" aria-pressed="' + (state.t === "M") + '">Motion</button>';
-    h += '<button class="chip h" data-t="H" aria-pressed="' + (state.t === "H") + '">HeyGen</button>';
-    $("bank-ctrl").innerHTML = h;
+    $("pf").innerHTML = FL.map(function (x) { return '<button class="chip' + (x[0] === "H" ? " h" : "") + '" data-f="' + x[0] + '" aria-pressed="' + (f === x[0]) + '">' + x[1] + '</button>'; }).join("");
   }
-  function list() {
-    var q = state.q.trim().toLowerCase();
-    var rows = D.bank.filter(function (b) {
-      return (state.p === "all" || b.p === state.p) && (state.t === "all" || b.track === state.t) && (!q || (b.hook + " " + b.note + " " + b.id).toLowerCase().indexOf(q) >= 0);
-    });
-    $("bank-count").textContent = "Показано: " + rows.length + " з " + D.bank.length;
-    $("bank-list").innerHTML = rows.length ? rows.map(function (b) {
-      return '<div class="bi"><span class="id">' + b.id + '</span><span class="tg' + (b.track === "H" ? " h" : "") + '">' + (b.track === "H" ? "HeyGen" : "Motion") + '</span>' +
-        '<span class="hook">' + esc(b.hook) + '</span><span class="nt">' + esc(b.note || b.pname) + '</span><span class="dy">' + (b.day ? "день " + b.day : "") + '</span></div>';
-    }).join("") : '<div class="empty">Нічого не знайдено</div>';
+  function card(v) {
+    var h = v.variant === "H";
+    var cls = "vc" + (h ? " h" : "") + (v.kind === "long" ? " long" : "");
+    return '<article class="' + cls + '"><div class="day"><b>' + v.day + '</b><span>день</span></div><div class="vbody">' +
+      '<div class="tags">' + (v.kind === "long" ? '<span class="tg long">Довге · YouTube</span>' : '<span class="tg dim">Шортс · Reels, TikTok, Shorts</span>') + '<span class="tg' + (h ? " h" : "") + '">' + (h ? "Motion + HeyGen" : "Motion") + '</span></div>' +
+      '<div class="en">' + esc(v.en) + '</div><div class="ua">' + esc(v.ua) + '</div><p class="ds">' + esc(v.desc) + '</p>' +
+      (v.kind === "long" ? '<div class="kw">' + esc(v.kw) + '</div><div class="chap">' + v.chapters.map(function (c, i) { return '<span>' + (i + 1) + '. ' + esc(c) + '</span>'; }).join("") + '</div>' : "") +
+      '</div></article>';
   }
-  $("bank-ctrl").addEventListener("click", function (e) {
-    var b = e.target.closest("button");
-    if (!b) return;
-    if (b.dataset.p) state.p = b.dataset.p;
-    if (b.dataset.t) state.t = b.dataset.t;
-    chips(); list();
-  });
-  $("bank-q").addEventListener("input", function (e) { state.q = e.target.value; list(); });
-  chips(); list();
-
-  /* ---- calendar ---- */
-  var wk = "";
-  for (var w = 0; w < 3; w++) {
-    var days = D.cal.slice(w * 7, w * 7 + 7);
-    wk += '<div class="week"><h3>Тиждень ' + (w + 1) + '</h3><div class="days">' + days.map(function (d) {
-      var items = d.slots.map(function (s, i) {
-        var cls = s.track === "H" ? "h" : (s.track === "M" ? "" : (s.track === "X" ? "x" : (s.track === "D" ? "d" : "r")));
-        var lab = s.kind === "cut" ? "Нарізка" : s.kind === "duel" ? "Дуель" : s.kind === "remix" ? "Ремікс" : (s.track === "H" ? "HeyGen" : "Motion");
-        if (s.kind === "duel") lab = "Дуель · 3 варіанти";
-        return '<li class="' + cls + (s.ready ? " rdy" : "") + '"><small>' + lab + '</small>' + esc(s.text) + '</li>';
-      }).join("");
-      return '<div class="day' + (d.long ? " long" : "") + '"><div class="dh"><span class="dn">' + d.day + '</span>' + (d.long ? '<span class="lg">ДОВГЕ</span>' : "") + '</div>' +
-        (d.long ? '<div class="lt">' + esc(d.long.title) + '</div>' : "") + '<ul>' + items + '</ul></div>';
-    }).join("") + '</div></div>';
+  function render() {
+    chips();
+    var html = "";
+    for (var w = 0; w < 3; w++) {
+      var vs = D.videos.filter(function (v) {
+        if (!(v.day > w * 7 && v.day <= w * 7 + 7)) return false;
+        return f === "all" || (f === "short" && v.kind === "short") || (f === "long" && v.kind === "long") || (f === "H" && v.variant === "H") || (f === "M" && v.variant === "M");
+      });
+      if (!vs.length) continue;
+      html += '<div class="week"><h3>Тиждень ' + (w + 1) + ' · дні ' + (w * 7 + 1) + '–' + (w * 7 + 7) + '</h3><div class="vlist">' + vs.map(card).join("") + '</div></div>';
+    }
+    $("weeks").innerHTML = html || '<p class="note">Немає відео за цим фільтром</p>';
   }
-  $("weeks").innerHTML = wk;
+  $("pf").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; f = b.dataset.f; render(); });
+  render();
 
-  /* ---- long ---- */
-  $("lgrid").innerHTML = D.longs.map(function (l) {
-    return '<article class="lc"><div class="top"><span class="mono">День ' + l.day + ' · YouTube · 8–12 хв</span><span class="tg">' + l.id + '</span></div>' +
-      '<h3>' + esc(l.title) + '</h3><div class="kw">' + esc(l.kw) + '</div><p>' + esc(l.proof) + '</p>' +
-      '<div class="chap">' + l.struct.map(function (s, i) { return '<span><b>' + (i + 1) + '</b>' + esc(s) + '</span>'; }).join("") + '</div>' +
-      '<p class="cuts">Нарізки на шортси: ' + esc(l.cuts) + '</p></article>';
-  }).join("");
-
-  /* ---- variants: original abstract mockups ---- */
+  /* format */
   var PH = 'M20 4h120a16 16 0 0 1 16 16v240a16 16 0 0 1-16 16H20A16 16 0 0 1 4 260V20A16 16 0 0 1 20 4z';
   function phone(inner) { return '<svg class="mock" viewBox="0 0 160 280" role="img" aria-label="Схема кадру">' + '<path d="' + PH + '" fill="#0D0E10" stroke="#34383F" stroke-width="3"/>' + inner + '</svg>'; }
   var avatar = function (cx, cy, s, col) { return '<g transform="translate(' + cx + ' ' + cy + ') scale(' + s + ')"><circle cx="0" cy="-26" r="19" fill="' + col + '"/><path d="M-42 34c0-24 18-38 42-38s42 14 42 38v6h-84z" fill="' + col + '"/></g>'; };
-  var MOCK = {
-    motion: phone('<rect x="16" y="22" width="86" height="12" rx="3" fill="#F2F0EA"/><rect x="16" y="40" width="58" height="12" rx="3" fill="#FFD200"/>' +
-      '<rect x="16" y="72" width="128" height="104" rx="8" fill="#FBF7EE"/><rect x="26" y="84" width="70" height="7" rx="2" fill="#1E2A44"/><rect x="26" y="100" width="100" height="6" rx="2" fill="#C9C3B5"/><rect x="26" y="114" width="100" height="6" rx="2" fill="#C9C3B5"/>' +
-      '<ellipse cx="76" cy="102" rx="58" ry="14" fill="none" stroke="#E5383B" stroke-width="3"/><rect x="26" y="130" width="76" height="6" rx="2" fill="#C9C3B5"/><rect x="26" y="146" width="40" height="6" rx="2" fill="#C9C3B5"/>' +
-      '<rect x="16" y="212" width="128" height="10" rx="3" fill="#F2F0EA"/><rect x="40" y="228" width="80" height="10" rx="3" fill="#FFD200"/>'),
-    hybrid: phone('<rect x="16" y="30" width="86" height="12" rx="3" fill="#F2F0EA"/><rect x="16" y="48" width="58" height="12" rx="3" fill="#FFD200"/>' +
-      '<circle cx="124" cy="46" r="22" fill="#1D2A3A" stroke="#5AA9E6" stroke-width="3"/>' + avatar(124, 52, 0.36, "#5AA9E6") +
-      '<rect x="16" y="86" width="128" height="104" rx="8" fill="#161B24" stroke="#2D3036"/>' +
-      '<path d="M26 170 L52 140 L74 152 L100 114 L132 100" fill="none" stroke="#FFD200" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 176h104" stroke="#3A3F48" stroke-width="2"/>' +
-      '<rect x="16" y="214" width="128" height="10" rx="3" fill="#F2F0EA"/><rect x="40" y="230" width="80" height="10" rx="3" fill="#FFD200"/>'),
-    heygen: phone('<rect x="16" y="26" width="110" height="12" rx="3" fill="#F2F0EA"/><rect x="16" y="44" width="70" height="12" rx="3" fill="#5AA9E6"/>' +
-      '<rect x="14" y="70" width="132" height="190" rx="10" fill="#171B22"/>' + avatar(80, 196, 1.05, "#5AA9E6") +
-      '<rect x="22" y="76" width="64" height="26" rx="6" fill="#0D0E10" stroke="#5AA9E6"/><rect x="30" y="85" width="48" height="6" rx="2" fill="#F2F0EA"/>' +
-      '<rect x="16" y="228" width="128" height="10" rx="3" fill="#F2F0EA"/><rect x="38" y="244" width="84" height="10" rx="3" fill="#FFD200"/>')
-  };
-  var vcls = {motion: "m", hybrid: "y", heygen: "h"};
-  $("vgrid").innerHTML = D.variants.map(function (v) {
-    return '<article class="vc ' + vcls[v.id] + '">' + MOCK[v.id] +
-      '<span class="lab">' + esc(v.tag) + '</span><h3>' + esc(v.name) + '</h3><p>' + esc(v.what) + '</p><p>' + esc(v.good) + '</p><p><b>Де:</b> ' + esc(v.use) + '</p></article>';
-  }).join("");
-  var duels = D.cal.filter(function (d) { return d.slots[2].kind === "duel"; });
-  $("dlist").innerHTML = duels.map(function (d) { return '<div><b>День ' + d.day + '</b>' + esc(d.slots[2].text) + '</div>'; }).join("");
+  var MOTION = phone('<rect x="16" y="22" width="86" height="12" rx="3" fill="#F2F0EA"/><rect x="16" y="40" width="58" height="12" rx="3" fill="#FFD200"/>' +
+    '<rect x="16" y="72" width="128" height="104" rx="8" fill="#FBF7EE"/><rect x="26" y="84" width="70" height="7" rx="2" fill="#1E2A44"/><rect x="26" y="100" width="100" height="6" rx="2" fill="#C9C3B5"/><rect x="26" y="114" width="100" height="6" rx="2" fill="#C9C3B5"/>' +
+    '<ellipse cx="76" cy="102" rx="58" ry="14" fill="none" stroke="#E5383B" stroke-width="3"/><rect x="26" y="130" width="76" height="6" rx="2" fill="#C9C3B5"/><rect x="26" y="146" width="40" height="6" rx="2" fill="#C9C3B5"/>' +
+    '<rect x="16" y="212" width="128" height="10" rx="3" fill="#F2F0EA"/><rect x="40" y="228" width="80" height="10" rx="3" fill="#FFD200"/>');
+  var HYBRID = phone('<rect x="16" y="30" width="86" height="12" rx="3" fill="#F2F0EA"/><rect x="16" y="48" width="58" height="12" rx="3" fill="#FFD200"/>' +
+    '<circle cx="124" cy="46" r="22" fill="#1D2A3A" stroke="#5AA9E6" stroke-width="3"/>' + avatar(124, 52, 0.36, "#5AA9E6") +
+    '<rect x="16" y="86" width="128" height="104" rx="8" fill="#161B24" stroke="#2D3036"/>' +
+    '<path d="M26 170 L52 140 L74 152 L100 114 L132 100" fill="none" stroke="#FFD200" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 176h104" stroke="#3A3F48" stroke-width="2"/>' +
+    '<rect x="16" y="214" width="128" height="10" rx="3" fill="#F2F0EA"/><rect x="40" y="230" width="80" height="10" rx="3" fill="#FFD200"/>');
+  $("fgrid").innerHTML =
+    '<article class="fc h">' + HYBRID + '<div><span class="mono">Основний варіант</span><h3>Motion + HeyGen</h3>' +
+    '<p>Ведучий HeyGen у кадрі: відкриває відео, відповідає на питання водіїв і закриває заклик. Поверх нього motion-графіка: схеми, чат, карта, цифри.</p>' +
+    '<ul><li>У плані: ' + S.h_shorts + ' шортсів і ' + S.longs + ' довгі</li><li>Обличчя тримає увагу на початку, графіка пояснює</li><li>Формат «Відповідь водієві» з коментарів</li></ul></div></article>' +
+    '<article class="fc">' + MOTION + '<div><span class="mono">Без людини</span><h3>Motion</h3>' +
+    '<p>Ілюстрована графіка без ведучого: чат із диспетчером, розбір оголошення червоною ручкою, екран ELD, карта, великий текст і голос за кадром.</p>' +
+    '<ul><li>У плані: ' + S.m_shorts + ' шортсів</li><li>Читається без звуку</li><li>Однаковий стиль у всіх відео</li></ul></div></article>';
 })();
 </script>
 </body>
